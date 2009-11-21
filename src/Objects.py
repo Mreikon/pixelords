@@ -154,6 +154,9 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 	def explode(self,map): # Explode
 		size = self.explosionSizeFactor*self.size
 
+		if Settings.soundEffects and size > 10:
+			self.game.soundExplode.play()
+
 		if int(self.x+size) > map.width:
 			right = map.width
 		else:

@@ -19,7 +19,7 @@
 
 - Explosion animations
 
-- Sounds
+- Sounds (basic support ready)
    - Effects
    - Music
 
@@ -28,5 +28,5 @@
    - IRC-channel (#pixelords @ Freenode)
 
 - Continuing tasks:
-   - More weapons, ships, levels (never ending task)
+   - More weapons, ships, levels
    - Optimizations

@@ -15,6 +15,10 @@ scaleType = 0 # 0=pixellated, 1=smooth, 2=AdvancedMAME
 scale = 1 # NOTICE: You should prefer hardware scaling
 showFPS = False
 
+gfxTheme = "default" # default, alternative
+music = True
+soundEffects = True
+
 playerAmount = 2
 
 lives = 5
@@ -35,7 +39,6 @@ heavyWeapons = coreHeavyWeapons #+extraHeavyWeapons
 ships = [ShipTypes.Fighter, ShipTypes.Basher, ShipTypes.Destroyer, ShipTypes.MegaGlider, ShipTypes.Interceptor, ShipTypes.Penetrator, ShipTypes.Dragon, ShipTypes.Incectar]
 
 map = "cave" # cave, sky, house, test
-gfxTheme = "default" # default, alternative
 
 # Player specific settings:
 

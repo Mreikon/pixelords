@@ -22,8 +22,16 @@ class Game:
 		self.text2 = pygame.font.SysFont(os.path.join("resources","LiberationSans-Regular.ttf"), 54)
 		self.text3 = pygame.font.SysFont(os.path.join("resources","LiberationSans-Regular.ttf"), 42)
 
-		#pygame.mixer.init(44100, -16, 2, 512)
-		#self.crash = pygame.mixer.Sound('res/crash.ogg')
+		if Settings.music or Settings.soundEffects:
+			pygame.mixer.quit()
+			pygame.mixer.init(44100, -16, 2, 512)
+
+		if Settings.music:
+			self.music = pygame.mixer.Sound(os.path.join("music","victory.ogg"))
+			self.music.play(-1)
+
+		if Settings.soundEffects:
+			self.soundExplode = pygame.mixer.Sound(os.path.join("sfx","beep.ogg"))
 
 		self.map = Map()
 
