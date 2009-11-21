@@ -66,7 +66,7 @@ class Game:
 		else:
 			self.screen = pygame.display.set_mode((Settings.width, Settings.height), screenFlagsCombined)
 
-		pygame.display.set_caption('<insert the game name here>')
+		pygame.display.set_caption('War of Pixelords')
 
 	def scale(self):
 		if Settings.scaleType == 1:
