@@ -3,7 +3,6 @@
 
 - Special camera settings for 4 players
 - Support for maps smaller than the screen
-- Optimizations
 
 - Main menu
    - Settings
@@ -24,12 +23,10 @@
    - Effects
    - Music
 
-- More weapons, ships, levels (never ending task)
-
-- Name
-   - Last Flight of the Pixels? LFotP?
-
 - Distribution
-   - VCS
-   - Website
-   - IRC-channel
+   - Website (maybe [also] a wiki)
+   - IRC-channel (#pixelords @ Freenode)
+
+- Continuing tasks:
+   - More weapons, ships, levels (never ending task)
+   - Optimizations
