@@ -39,6 +39,7 @@ class Game:
 
 	def initScreen(self):
 		pygame.display.init()
+
 		pygame.mouse.set_visible(False)
 
 		screenFlags = []
@@ -66,7 +67,8 @@ class Game:
 		else:
 			self.screen = pygame.display.set_mode((Settings.width, Settings.height), screenFlagsCombined)
 
-		pygame.display.set_caption('War of Pixelords')
+		pygame.display.set_caption("War of Pixelords")
+		pygame.display.set_icon(pygame.image.load(os.path.join("gfx","default","ship2.png")).convert_alpha())
 
 	def scale(self):
 		if Settings.scaleType == 1:
