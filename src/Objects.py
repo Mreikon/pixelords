@@ -231,6 +231,42 @@ class RepairKit(Object):
 
 		self.destroy(map)
 
+class WeaponChanger(Object):
+	def init(self):
+		self.gravity = False
+		self.objectCollision = True
+		self.explosionSizeFactor = 0
+		self.size = 10
+		self.heavy = random.randint(0,1)
+		if self.heavy:
+			self.Newweapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)]()
+		else:
+			self.Newweapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)]()
+		
+		
+		while True:
+			x = random.randint(1,self.game.map.width-1)
+			y = random.randint(1,self.game.map.height-1)
+
+			if self.game.map.mask.get_at((x,y)) == (0,0,0, 255):
+				break
+
+		self.x = x
+		self.y = y
+
+		self.sprite("ship2.png")
+
+	def check(self, map):
+		self.collision(map)
+
+	def onShipHit(self,map,ship):
+		if self.heavy:
+			ship.heavyWeapon = self.newWeapon
+		else:
+			ship.lightWeapon = self.newWeapon
+
+		self.destroy(map)
+
 class ThrustFlame(Object):
 	def init(self):
 		self.airResistance = 60
@@ -640,40 +676,3 @@ class RifleBullet(BombParticle):
 
 		self.size = 2
 		self.shipDamage = 50
-
-		
-class WeaponChanger(Object):
-	def init(self):
-		self.gravity = False
-		self.objectCollision = True
-		self.explosionSizeFactor = 0
-		self.size = 10
-		self.heavy = random.randint(0,1)
-		if self.heavy:
-			self.Newweapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)]()
-		else:
-			self.Newweapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)]()
-		
-		
-		while True:
-			x = random.randint(1,self.game.map.width-1)
-			y = random.randint(1,self.game.map.height-1)
-
-			if self.game.map.mask.get_at((x,y)) == (0,0,0, 255):
-				break
-
-		self.x = x
-		self.y = y
-
-		self.sprite("repairkit.png")
-
-	def check(self, map):
-		self.collision(map)
-
-	def onShipHit(self,map,ship):
-		if self.heavy:
-			ship.heavyWeapon = self.Newweapon
-		else:
-			ship.lightWeapon = self.Newweapon
-
-		self.destroy(map)
