@@ -1,3 +1,55 @@
-War of Pixelords is multiplayer shooter game made with Python.
+ About
+-------
 
-To contact the developers email to ape@ape3000.com
+War of Pixelords (WoP) is a multiplayer shooter game made with Python. The
+players fight against each other with versatile space ships and various weapons.
+
+To contact the developers send mail to ape@ape3000.com. If you have any ideas or
+questions about the project don't hesitate to contact.
+
+
+ Running the game
+------------------
+
+To play the game run pixelords.py with your Python:
+
+	python pixelords.py
+
+You need python and pygame. It is recommended to use the latest versions of
+them.
+
+
+ Contributing
+--------------
+
+If you have made any pieces of code for the game (engine, weapons) or content
+like levels, graphics and sounds, please consider sending them for the main
+project.
+
+There are some ways to share the contributions. The best way is to commit them
+to a Git repository and making a pull request on the main Git tree [1]. You can
+also make a patch of your changes (diff -u) or send the files in the format you
+prefer with email to ape@ape3000.com.
+
+	[1] http://github.com/Ape/pixelords
+
+
+ How to make weapons
+---------------------
+
+See src/Items.py for weapon data. Every weapon and it's attributes are listed
+there. A weapon usually spawns objects that can be found in src/Object.py. Also
+remember to add you weapons to src/Settings.py.
+
+
+ How to make levels
+--------------------
+
+Levels (or maps) can be easily created with any image manipulation software. A
+map cosists of data mask (mask.png) that has the information about ground types,
+a visual image (visual.png) telling what the level should look like, and a
+background image that is shown when ground is destroyed and in places very the
+visual map has transparency.
+
+Place your map files as it's own folder to the maps/-folder and type the folder
+name to src/Settings.py as the selected map to play on it.
