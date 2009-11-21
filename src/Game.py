@@ -3,6 +3,7 @@
 import pygame
 import math
 import os
+import random
 
 import Settings
 import Objects
@@ -41,7 +42,7 @@ class Game:
 		for i in range(Settings.playerAmount-1,-1,-1):
 			self.players.append(Player.Player(self, Settings.keys[i], Settings.colors[i]))
 
-		self.bonusTimer = 3000
+		self.bonusTimer = 2000
 
 		self.run()
 
@@ -118,8 +119,11 @@ class Game:
 	def checkBonusSpawn(self):
 		if Settings.repairKits:
 			if self.bonusTimer <= 0:
-				self.bonusTimer = 3000
-				self.objects.append(Objects.RepairKit(self))
+				self.bonusTimer = 2000
+				if random.randint(0,1):
+					self.objects.append(Objects.RepairKit(self))
+				else:
+					self.objects.append(Objects.WeaponChanger(self))
 			else:
 				self.bonusTimer -= 1
 
