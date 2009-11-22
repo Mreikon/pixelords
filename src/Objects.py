@@ -97,7 +97,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 
 		xrange = []
 		if self.dx > 0:
-			xrange = range(int(self.x)+1, int(self.x+self.dx+1.414213562373095*self.dx/math.sqrt(self.dx**2+self.dy**2+0.01)+1), 1)
+			xrange = range(int(self.x)+1, int(self.x+self.dx+1.414213562373095*self.dx/math.sqrt(self.dx**2+self.dy**2+0.01))+1, 1)
 		elif self.dx < 0:
 			xrange = range(int(self.x)-1, int(self.x+self.dx+1.414213562373095*self.dx/math.sqrt(self.dx**2+self.dy**2+0.01))-1, -step)
 		if len(xrange) == 0:
@@ -105,7 +105,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 
 		yrange = []
 		if self.dy > 0:
-			yrange = range(int(self.y)+1, int(self.y+self.dy+1.414213562373095*self.dy/math.sqrt(self.dx**2+self.dy**2+0.01)), step)
+			yrange = range(int(self.y)+1, int(self.y+self.dy+1.414213562373095*self.dy/math.sqrt(self.dx**2+self.dy**2+0.01))+1, step)
 		elif self.dy < 0:
 			yrange = range(int(self.y)-1, int(self.y+self.dy+1.414213562373095*self.dy/math.sqrt(self.dx**2+self.dy**2+0.01))-1, -step)
 		if len(yrange) == 0:

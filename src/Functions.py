@@ -4,7 +4,7 @@ import os
 
 import Settings
 
-def	gfxPath(file):
+def gfxPath(file):
 	if os.path.exists(os.path.join("gfx",Settings.gfxTheme,file)):
 		path = os.path.join("gfx",Settings.gfxTheme,file)
 	else:
