@@ -30,10 +30,12 @@ class Game:
 
 		if Settings.music:
 			self.music = pygame.mixer.Sound(os.path.join("music","victory.ogg"))
+			self.music.set_volume(Settings.musicVolume)
 			self.music.play(-1)
 
 		if Settings.soundEffects:
 			self.soundExplode = pygame.mixer.Sound(os.path.join("sfx","beep.ogg"))
+			self.soundExplode.set_volume(Settings.soundEffectsVolume)
 
 		self.map = Map()
 
