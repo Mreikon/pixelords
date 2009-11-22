@@ -34,6 +34,17 @@ prefer with email to ape@ape3000.com.
 	[1] http://github.com/Ape/pixelords
 
 
+ Coding guidelines
+-------------------
+
+To keep everything coherent, simple and working everybody should follow certain
+coding standards:
+
+	- Use LF (unix) line endigns.
+	- Use tabs for indentation. Python is strict about mixing spaces and tabs.
+	- Keep the code as simple as possible.
+
+
  How to make weapons
 ---------------------
 
