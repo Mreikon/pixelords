@@ -6,6 +6,7 @@ import os
 import random
 
 import Settings
+import Functions
 
 class Object(pygame.sprite.Sprite): # Parent class for all objects
 	def __init__(self, game, x=0,y=0, dx=0,dy=0, color=(100,100,100)): # Give default values
@@ -40,7 +41,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 
 		pygame.sprite.Sprite.__init__(self)
 
-		self.baseImage = pygame.image.load(os.path.join("gfx",Settings.gfxTheme,image)).convert_alpha()
+		self.baseImage = pygame.image.load(Functions.gfxPath(image)).convert_alpha()
 		self.image = self.baseImage
 		self.rect = self.image.get_rect()
 		self.rect.center = (self.x, self.y)

@@ -4,6 +4,7 @@ import pygame
 import os
 
 import Settings
+import Functions
 
 class Menu:
 	def __init__(self):
@@ -45,7 +46,7 @@ class shipChooser(Menu):
 
 		game.screen.fill((0,0,0), ((i*Settings.width/Settings.playerAmount,0),(Settings.width/Settings.playerAmount,Settings.height)))
 
-		game.screen.blit(pygame.transform.scale(pygame.image.load(os.path.join("gfx",Settings.gfxTheme,Settings.ships[self.shipNum]().image)), (200,150)),(i*Settings.width/Settings.playerAmount+25,25))
+		game.screen.blit(pygame.transform.scale(pygame.image.load(Functions.gfxPath(Settings.ships[self.shipNum]().image)), (200,150)),(i*Settings.width/Settings.playerAmount+25,25))
 
 		game.screen.blit(game.text2.render(Settings.ships[self.shipNum]().name, True, (0,255,0)), (i*Settings.width/Settings.playerAmount+25,200))
 
