@@ -19,9 +19,10 @@ class Game:
 
 		pygame.font.init()
 
-		self.text = pygame.font.SysFont(os.path.join("resources","LiberationSans-Regular.ttf"), 22)
-		self.text2 = pygame.font.SysFont(os.path.join("resources","LiberationSans-Regular.ttf"), 54)
-		self.text3 = pygame.font.SysFont(os.path.join("resources","LiberationSans-Regular.ttf"), 42)
+		self.text = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 22)
+		self.text2 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 54)
+		self.text3 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 42)
+		self.text4 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 16)
 
 		if Settings.music or Settings.soundEffects:
 			pygame.mixer.quit()

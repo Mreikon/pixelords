@@ -239,10 +239,9 @@ class WeaponChanger(Object):
 		self.size = 10
 		self.heavy = random.randint(0,1)
 		if self.heavy:
-			self.Newweapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)]()
+			self.newWeapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)]()
 		else:
-			self.Newweapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)]()
-		
+			self.newWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)]()
 		
 		while True:
 			x = random.randint(1,self.game.map.width-1)
@@ -254,7 +253,7 @@ class WeaponChanger(Object):
 		self.x = x
 		self.y = y
 
-		self.sprite("ship2.png")
+		self.sprite("weaponbox.png")
 
 	def check(self, map):
 		self.collision(map)
@@ -266,6 +265,14 @@ class WeaponChanger(Object):
 			ship.lightWeapon = self.newWeapon
 
 		self.destroy(map)
+
+	def draw(self, map):
+		self.spriteDraw(map)
+
+		self.text = self.game.text4.render(self.newWeapon.name, True, (255,255,255))
+
+		self.game.map.screenImage.blit(self.text, (self.x-self.text.get_width()/2-1,self.y-23))
+		self.game.map.redraw((int(self.x-self.text.get_width()/2-1),int(self.y-23)),(self.text.get_width(), self.text.get_height()))
 
 class ThrustFlame(Object):
 	def init(self):
