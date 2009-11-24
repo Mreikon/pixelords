@@ -74,6 +74,10 @@ class Game:
 		for flag in screenFlags:
 			screenFlagsCombined |= flag
 
+		pygame.display.set_caption("War of Pixelords")
+		pygame.display.set_icon(pygame.image.load(os.path.join("gfx","default","ship2.png")))
+			
+
 		if Settings.scale != 1:
 			if Settings.scaleType == 2:
 				Settings.scale = 2**int(math.log(Settings.scale,2))
@@ -82,8 +86,7 @@ class Game:
 		else:
 			self.screen = pygame.display.set_mode((Settings.width, Settings.height), screenFlagsCombined)
 
-		pygame.display.set_caption("War of Pixelords")
-		pygame.display.set_icon(pygame.image.load(os.path.join("gfx","default","ship2.png")).convert_alpha())
+
 
 	def scale(self):
 		if Settings.scaleType == 1:
