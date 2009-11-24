@@ -1,11 +1,18 @@
  About
 -------
 
-War of Pixelords (WoP) is a multiplayer shooter game made with Python. The
-players fight against each other with versatile space ships and various weapons.
+War of Pixelords is a free, open-source, multiplayer shooting game. It is fully
+made with Python using Pygame. Two or more players control ships that are
+capable of flying in many environments. The goal is to destroy the other
+players. There are many ship types and weapons. Levels can be easily created
+with any image editor such as GIMP.
 
 To contact the developers send mail to ape@ape3000.com. If you have any ideas or
 questions about the project don't hesitate to contact.
+
+You can find more information about the project on it's website:
+
+	http://pixelords.sourceforge.net/
 
 
  Running the game
@@ -19,48 +26,11 @@ You need python and pygame. It is recommended to use the latest versions of
 them.
 
 
- Contributing
---------------
+ Development
+-------------
 
-If you have made any pieces of code for the game (engine, weapons) or content
-like levels, graphics and sounds, please consider sending them for the main
-project.
+More information about the development of the game can be found on the project
+website [1]. The website has information about making content and taking part
+in the development.
 
-There are some ways to share the contributions. The best way is to commit them
-to a Git repository and making a pull request on the main Git tree [1]. You can
-also make a patch of your changes (diff -u) or send the files in the format you
-prefer with email to ape@ape3000.com.
-
-	[1] http://github.com/Ape/pixelords
-
-
- Coding guidelines
--------------------
-
-To keep everything coherent, simple and working everybody should follow certain
-coding standards:
-
-	- Use LF (unix) line endigns.
-	- Use tabs for indentation. Python is strict about mixing spaces and tabs.
-	- Keep the code as simple as possible.
-
-
- How to make weapons
----------------------
-
-See src/Items.py for weapon data. Every weapon and it's attributes are listed
-there. A weapon usually spawns objects that can be found in src/Object.py. Also
-remember to add you weapons to src/Settings.py.
-
-
- How to make levels
---------------------
-
-Levels (or maps) can be easily created with any image manipulation software. A
-map cosists of data mask (mask.png) that has the information about ground types,
-a visual image (visual.png) telling what the level should look like, and a
-background image that is shown when ground is destroyed and in places very the
-visual map has transparency.
-
-Place your map files as it's own folder to the maps/-folder and type the folder
-name to src/Settings.py as the selected map to play on it.
+	[1] http://pixelords.sourceforge.net/
