@@ -481,6 +481,9 @@ class BombParticle(Object): # Class for any kinds of bombs
 		self.collision(map)
 
 	def onGroundHit(self,map,x,y):
+		self.x = x
+		self.y = y
+
 		self.explode(map)
 
 	def onShipHit(self,map,ship):
