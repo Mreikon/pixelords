@@ -6,6 +6,7 @@ import os
 import random
 
 import Settings
+import Functions
 import Objects
 import Player
 
@@ -106,14 +107,13 @@ class Game:
 			else:
 				if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
 					self.__init__()
-				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F9:
-					pygame.image.save(self.map.mask, "mask.png")
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F10:
-					pygame.image.save(self.map.visual, "visual.png")
+					pygame.image.save(self.map.mask, Functions.saveNameIncrement(".", "mask", "png"))
+					pygame.image.save(self.map.visual, Functions.saveNameIncrement(".", "visual", "png"))
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-					pygame.image.save(self.screen, "screen.png")
+					pygame.image.save(self.map.screenImage, Functions.saveNameIncrement(".", "fullmap", "png"))
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F12:
-					pygame.image.save(self.map.screenImage, "fullmap.png")
+					pygame.image.save(self.screen, Functions.saveNameIncrement(".", "screen", "png"))
 				elif (event.type == pygame.KEYDOWN or event.type == pygame.KEYUP) and not(self.gameOver):
 					for player in self.players:
 						if player.ship.active:
