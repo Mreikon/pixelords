@@ -201,23 +201,25 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 
 			self.game.objects.remove(self)
 
-class RepairKit(Object):
-	def init(self):
-		self.gravity = False
-		self.objectCollision = True
-		self.explosionCollision = False
-		self.explosionSizeFactor = 0
-		self.size = 10
-
+	def randomizeLocation(self, map):
 		while True:
-			x = random.randint(1,self.game.map.width-1)
-			y = random.randint(1,self.game.map.height-1)
+			x = random.randint(1,map.width-1)
+			y = random.randint(1,map.height-1)
 
-			if self.game.map.mask.get_at((x,y)) == (0,0,0, 255):
+			if map.mask.get_at((x,y)) == (0,0,0, 255):
 				break
 
 		self.x = x
 		self.y = y
+
+class RepairKit(Object):
+	def init(self):
+		self.gravity = False
+		self.explosionCollision = False
+		self.explosionSizeFactor = 0
+		self.size = 10
+
+		self.randomizeLocation(self.game.map)
 
 		self.sprite("repairkit.png")
 
@@ -235,7 +237,6 @@ class RepairKit(Object):
 class WeaponChanger(Object):
 	def init(self):
 		self.gravity = False
-		self.objectCollision = True
 		self.explosionSizeFactor = 0
 		self.size = 10
 		self.heavy = random.randint(0,1)
@@ -244,15 +245,7 @@ class WeaponChanger(Object):
 		else:
 			self.newWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)]()
 		
-		while True:
-			x = random.randint(1,self.game.map.width-1)
-			y = random.randint(1,self.game.map.height-1)
-
-			if self.game.map.mask.get_at((x,y)) == (0,0,0, 255):
-				break
-
-		self.x = x
-		self.y = y
+		self.randomizeLocation(self.game.map)
 
 		self.sprite("weaponbox.png")
 

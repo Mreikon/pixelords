@@ -24,7 +24,7 @@ playerAmount = 2
 
 lives = 5
 resetWeaponsOnDeath = True
-repairKits = True
+bonusDelay = 2000 # 0 = disabled
 
 loadingSpeed = 100
 shipStrenght = 100

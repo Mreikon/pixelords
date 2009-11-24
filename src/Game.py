@@ -48,7 +48,7 @@ class Game:
 		for i in range(Settings.playerAmount-1,-1,-1):
 			self.players.append(Player.Player(self, Settings.keys[i], Settings.colors[i]))
 
-		self.bonusTimer = 2000
+		self.bonusTimer = Settings.bonusDelay
 
 		self.run()
 
@@ -133,9 +133,9 @@ class Game:
 							player.event(event)
 
 	def checkBonusSpawn(self):
-		if Settings.repairKits:
+		if Settings.bonusDelay > 0:
 			if self.bonusTimer <= 0:
-				self.bonusTimer = 2000
+				self.bonusTimer = Settings.bonusDelay
 				if random.randint(0,1):
 					self.objects.append(Objects.RepairKit(self))
 				else:

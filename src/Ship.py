@@ -47,15 +47,8 @@ class Ship(Objects.Object): # Ship
 				self.baseImage.set_at((x,y), (newcolor[0]*255, newcolor[1]*255, newcolor[2]*255, self.baseImage.get_at((x,y))[3]))
 
 	def spawn(self):
-		while True:
-			x = random.randint(1,self.game.map.width-1)
-			y = random.randint(1,self.game.map.height-1)
+		self.randomizeLocation(self.game.map)
 
-			if self.game.map.mask.get_at((x,y)) == (0,0,0, 255):
-				break
-
-		self.x = x
-		self.y = y
 		self.dx = 0
 		self.dy = 0
 		self.angle = 3*math.pi/2
