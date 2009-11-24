@@ -6,7 +6,7 @@ import random
 import Settings
 import Objects
 
-class Item: # A thing that a ship can use
+class Weapon: # A thing that a ship can use
 	def __init__(self):
 		self.loaded = 100.0
 		self.loadSpeed = 1
@@ -48,7 +48,7 @@ class Item: # A thing that a ship can use
 		if self.loading and self.loaded < 100:
 			self.loaded += self.loadSpeed*(Settings.loadingSpeed/100.0)*(ship.loadingSpeed/100.0)
 
-class Cannon(Item):
+class Cannon(Weapon):
 	def init(self):
 		self.name = "Cannon"
 		self.loadSpeed = 0.75
@@ -57,7 +57,7 @@ class Cannon(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Cannonball, 12, 3)
 
-class Shotgun(Item):
+class Shotgun(Weapon):
 	def init(self):
 		self.name = "Shotgun"
 		self.loadSpeed = 1.5
@@ -66,7 +66,7 @@ class Shotgun(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Bullet, 10, 3, 2, 0.1, 10)
 
-class Banana(Item):
+class Banana(Weapon):
 	def init(self):
 		self.name = "Banana"
 		self.loadSpeed = 0.5
@@ -75,7 +75,7 @@ class Banana(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Banana, 10, 1, 2, 0.1, 12)
 
-class MachineGun(Item):
+class MachineGun(Weapon):
 	def init(self):
 		self.name = "MachineGun"
 		self.loadSpeed = 0.3
@@ -87,7 +87,7 @@ class MachineGun(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Bullet, 10, 10, 1, 0.05)
 
-class Flamer(Item):
+class Flamer(Weapon):
 	def init(self):
 		self.name = "Flamer"
 		self.loadSpeed = 0.05
@@ -97,7 +97,7 @@ class Flamer(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Flame, 12, 8, 2, 0.1)
 
-class Laser(Item):
+class Laser(Weapon):
 	def init(self):
 		self.name = "Laser"
 		self.loadSpeed = 0.25
@@ -107,7 +107,7 @@ class Laser(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Laser, 10, 1, 1, 0, 1, 0)
 
-class Rifle(Item):
+class Rifle(Weapon):
 	def init(self):
 		self.name = "Rifle"
 		self.loadSpeed = 0.5
@@ -116,7 +116,7 @@ class Rifle(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.RifleBullet, 10, 10)
 
-class Bomber(Item):
+class Bomber(Weapon):
 	def init(self):
 		self.name = "Bomber"
 		self.loadSpeed = 0.5
@@ -124,7 +124,7 @@ class Bomber(Item):
 	def fire(self, ship):
 		ship.game.objects.append(Objects.Bomb(ship.game, ship.x+ship.dx, ship.y+ship.dy+15, ship.dx, ship.dy+0.5))
 
-class Backshot(Item):
+class Backshot(Weapon):
 	def init(self):
 		self.name = "Backshot"
 		self.loadSpeed = 0.5
@@ -133,7 +133,7 @@ class Backshot(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Shard, -10, -3, 2, 0.2, 7)
 
-class Reverse(Item):
+class Reverse(Weapon):
 	def init(self):
 		self.name = "Reverse"
 		self.loadSpeed = 0.2
@@ -145,7 +145,7 @@ class Reverse(Item):
 		if random.uniform(0,1) < 0.5:
 			ship.game.objects.append(Objects.ThrustFlame(ship.game, ship.x-2*ship.dx+12*math.cos(ship.angle), ship.y-2*ship.dy+12*math.sin(ship.angle), ship.dx+1*math.cos(ship.angle), ship.dy+1*math.sin(ship.angle)))
 
-class Dirt(Item):
+class Dirt(Weapon):
 	def init(self):
 		self.name = "Dirt"
 		self.loadSpeed = 1
@@ -154,7 +154,7 @@ class Dirt(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Dirtball, 14, 3)
 
-class Disruptor(Item):
+class Disruptor(Weapon):
 	def init(self):
 		self.name = "Disruptor"
 		self.loadSpeed = 0.1
@@ -162,7 +162,7 @@ class Disruptor(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Disruptionball, 20, 5)
 
-class Larpa(Item):
+class Larpa(Weapon):
 	def init(self):
 		self.name = "Larpa"
 		self.loadSpeed = 0.5
@@ -170,7 +170,7 @@ class Larpa(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Larpa, 20, 5)
 
-class Halo(Item):
+class Halo(Weapon):
 	def init(self):
 		self.name = "Halo"
 		self.loadSpeed = 0.75
@@ -178,7 +178,7 @@ class Halo(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Shard, 11, 6, 1, math.pi, 25)
 
-class Mine(Item):
+class Mine(Weapon):
 	def init(self):
 		self.name = "Mine"
 		self.loadSpeed = 0.1
@@ -186,7 +186,7 @@ class Mine(Item):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Mine, -20, 0)
 
-class Eraser(Item):
+class Eraser(Weapon):
 	def init(self):
 		self.name = "Eraser"
 		self.loadSpeed = 0.075
@@ -197,7 +197,7 @@ class Eraser(Item):
 		object.owner = ship
 		ship.game.objects.append(object)
 
-class Radiation(Item):
+class Radiation(Weapon):
      def init(self):
           self.name = "Radiation"
           self.loadSpeed = 0.3

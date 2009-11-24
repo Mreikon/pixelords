@@ -2,7 +2,7 @@
 
 import pygame
 
-import Items
+import Weapons
 import ShipTypes
 
 # Configuration:
@@ -28,11 +28,11 @@ bonusDelay = 2000 # 0 = disabled
 
 loadingSpeed = 100
 shipStrenght = 100
-coreLightWeapons = [Items.Cannon, Items.Shotgun, Items.Flamer, Items.Laser, Items.MachineGun, Items.Rifle, Items.Banana]
-extraLightWeapons = [Items.Radiation]
+coreLightWeapons = [Weapons.Cannon, Weapons.Shotgun, Weapons.Flamer, Weapons.Laser, Weapons.MachineGun, Weapons.Rifle, Weapons.Banana]
+extraLightWeapons = [Weapons.Radiation]
 
-coreHeavyWeapons = [Items.Bomber, Items.Backshot, Items.Reverse, Items.Dirt, Items.Halo, Items.Eraser, Items.Mine]
-extraHeavyWeapons = [Items.Disruptor, Items.Larpa]
+coreHeavyWeapons = [Weapons.Bomber, Weapons.Backshot, Weapons.Reverse, Weapons.Dirt, Weapons.Halo, Weapons.Eraser, Weapons.Mine]
+extraHeavyWeapons = [Weapons.Disruptor, Weapons.Larpa]
 
 lightWeapons = coreLightWeapons #+extraLightWeapons
 heavyWeapons = coreHeavyWeapons #+extraHeavyWeapons

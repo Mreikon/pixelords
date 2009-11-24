@@ -76,7 +76,6 @@ class Game:
 
 		pygame.display.set_caption("War of Pixelords")
 		pygame.display.set_icon(pygame.image.load(os.path.join("gfx","default","ship2.png")))
-			
 
 		if Settings.scale != 1:
 			if Settings.scaleType == 2:
@@ -85,8 +84,6 @@ class Game:
 			self.screen = pygame.transform.scale(self.scaled, (Settings.width, Settings.height))
 		else:
 			self.screen = pygame.display.set_mode((Settings.width, Settings.height), screenFlagsCombined)
-
-
 
 	def scale(self):
 		if Settings.scaleType == 1:
