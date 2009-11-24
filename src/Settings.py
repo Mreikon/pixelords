@@ -18,9 +18,7 @@ showFPS = False
 gfxTheme = "default" # default, alternative
 music = True
 soundEffects = True
-
 musicVolume = 0.5
-soundEffectsVolume = 1.0
 
 playerAmount = 2
 

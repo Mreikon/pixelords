@@ -29,14 +29,16 @@ class Game:
 			pygame.mixer.quit()
 			pygame.mixer.init(44100, -16, 2, 512)
 
+			pygame.mixer.music.set_volume(Settings.musicVolume)
+			self.music = ""
+
 		if Settings.music:
-			self.music = pygame.mixer.Sound(os.path.join("music","victory.ogg"))
-			self.music.set_volume(Settings.musicVolume)
-			self.music.play(-1)
+			self.music = "victory.ogg"
+			pygame.mixer.music.load(os.path.join("music",self.music))
+			pygame.mixer.music.play(-1)
 
 		if Settings.soundEffects:
 			self.soundExplode = pygame.mixer.Sound(os.path.join("sfx","beep.ogg"))
-			self.soundExplode.set_volume(Settings.soundEffectsVolume)
 
 		self.map = Map()
 
@@ -107,6 +109,17 @@ class Game:
 			else:
 				if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
 					self.__init__()
+				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F9:
+					if Settings.music:
+						pygame.mixer.music.stop()
+						Settings.music = False
+					else:
+						if len(self.music) == 0:
+							self.music = "victory.ogg"
+							pygame.mixer.music.load(os.path.join("music",self.music))
+
+						pygame.mixer.music.play(-1)
+						Settings.music = True
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F10:
 					pygame.image.save(self.map.mask, Functions.saveNameIncrement(".", "mask", "png"))
 					pygame.image.save(self.map.visual, Functions.saveNameIncrement(".", "visual", "png"))
