@@ -1,33 +1,41 @@
 # -*- coding: utf-8 -*-
 
 import pygame
+import ConfigParser
+import os
 
 import Weapons
 import ShipTypes
 
-# Configuration:
-width = 800
-height = 600
-fullscreen = 0 # 0=windowed, 1=fullscreen, 2=frameless
-hardwareAcceleration = False
-doubleBuffer = False
-scaleType = 0 # 0=pixellated, 1=smooth, 2=AdvancedMAME
-scale = 1 # NOTICE: You should prefer hardware scaling
-showFPS = False
+config = ConfigParser.ConfigParser()
+config.read("config.txt")
 
-gfxTheme = "default" # default, alternative
-music = True
-soundEffects = True
-musicVolume = 0.5
+# Screen:
+width = config.getint("Screen", "width")
+height = config.getint("Screen", "height")
+fullscreen = config.getint("Screen", "fullscreen")
+hwAcceleration = config.getboolean("Screen", "hwAcceleration")
+doubleBuffering = config.getboolean("Screen", "doubleBuffering")
+scale = config.getfloat("Screen", "scaleFactor")
+scaleType = config.getint("Screen", "scaleType")
+showFPS = config.getboolean("Screen", "showFPS")						
 
-playerAmount = 2
+# Sound:
+music = config.getboolean("Sound", "music")
+soundEffects = config.getboolean("Sound", "soundEffects")
+musicVolume = config.getfloat("Sound", "musicVolume")
 
-lives = 5
-resetWeaponsOnDeath = True
-bonusDelay = 2000 # 0 = disabled
+# Game rules:
+playerAmount = config.getint("Game rules", "playerAmount")
+lives = config.getint("Game rules", "lives")
+resetWeaponsOnDeath = config.getboolean("Game rules", "resetWeaponsOnDeath")
+bonusDelay = config.getint("Game rules", "bonusDelay")
+loadingSpeed = config.getint("Game rules", "loadingSpeed")
+shipStrenght = config.getint("Game rules", "shipStrenght")
 
-loadingSpeed = 100
-shipStrenght = 100
+map = config.get("Game rules", "map")
+gfxTheme = config.get("Game rules", "gfxTheme")
+
 coreLightWeapons = [Weapons.Cannon, Weapons.Shotgun, Weapons.Flamer, Weapons.Laser, Weapons.MachineGun, Weapons.Rifle, Weapons.Banana]
 extraLightWeapons = [Weapons.Radiation]
 
@@ -39,10 +47,7 @@ heavyWeapons = coreHeavyWeapons #+extraHeavyWeapons
 
 ships = [ShipTypes.Fighter, ShipTypes.Basher, ShipTypes.Destroyer, ShipTypes.MegaGlider, ShipTypes.Interceptor, ShipTypes.Penetrator, ShipTypes.Dragon, ShipTypes.Incectar]
 
-map = "cave" # cave, sky, house, test
-
 # Player specific settings:
-
 keys = []
 keys.append((pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_RCTRL))
 keys.append((pygame.K_w, pygame.K_a, pygame.K_d, pygame.K_s, pygame.K_LCTRL))

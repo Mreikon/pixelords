@@ -64,10 +64,10 @@ class Game:
 		elif Settings.fullscreen == 2:
 			screenFlags.append(pygame.NOFRAME)
 
-		if Settings.hardwareAcceleration:
+		if Settings.hwAcceleration:
 			screenFlags.append(pygame.HWSURFACE)
 
-		if Settings.doubleBuffer:
+		if Settings.doubleBuffering:
 			screenFlags.append(pygame.DOUBLEBUF)
 
 		screenFlagsCombined = 0

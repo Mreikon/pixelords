@@ -1,0 +1,25 @@
+[Screen]
+width: 800
+height: 600
+fullscreen: 0
+hwAcceleration: false
+doubleBuffering: false
+scaleFactor: 1
+scaleType: 0
+showFPS: false
+
+[Sound]
+music: true
+soundEffects: true
+musicVolume: 0.5
+
+[Game rules]
+playerAmount: 2
+lives: 5
+resetWeaponsOnDeath: true
+bonusDelay: 2000
+loadingSpeed = 100
+shipStrenght = 100
+
+map: cave
+gfxTheme: default

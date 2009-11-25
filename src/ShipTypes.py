@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class Fighter():
+class Fighter:
 	def __init__(self):
 		self.name = "Fighter"
 		self.image = "ship1.png"
@@ -9,7 +9,7 @@ class Fighter():
 		self.acceleration = 4
 		self.loadingSpeed = 4
 
-class Basher():
+class Basher:
 	def __init__(self):
 		self.name = "Basher"
 		self.image = "ship6.png"
@@ -18,7 +18,7 @@ class Basher():
 		self.acceleration = 5
 		self.loadingSpeed = 1
 
-class Destroyer():
+class Destroyer:
 	def __init__(self):
 		self.name = "Destroyer"
 		self.image = "ship3.png"
@@ -27,7 +27,7 @@ class Destroyer():
 		self.acceleration = 1
 		self.loadingSpeed = 4
 
-class MegaGlider():
+class MegaGlider:
 	def __init__(self):
 		self.name = "Mega Glider"
 		self.image = "ship4.png"
@@ -36,7 +36,7 @@ class MegaGlider():
 		self.acceleration = 1
 		self.loadingSpeed = 1
 
-class Interceptor():
+class Interceptor:
 	def __init__(self):
 		self.name = "Interceptor"
 		self.image = "ship2.png"
@@ -45,7 +45,7 @@ class Interceptor():
 		self.acceleration = 8
 		self.loadingSpeed = 3
 
-class Penetrator():
+class Penetrator:
 	def __init__(self):
 		self.name = "Penetrator"
 		self.image = "ship7.png"
@@ -54,7 +54,7 @@ class Penetrator():
 		self.acceleration = 5
 		self.loadingSpeed = 5
 
-class Dragon():
+class Dragon:
 	def __init__(self):
 		self.name = "Dragon"
 		self.image = "ship8.png"
@@ -63,7 +63,7 @@ class Dragon():
 		self.acceleration = 6
 		self.loadingSpeed = 3
 
-class Incectar():
+class Incectar:
 	def __init__(self):
 		self.name = "Incectar"
 		self.image = "ship5.png"

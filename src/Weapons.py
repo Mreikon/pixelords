@@ -85,7 +85,7 @@ class MachineGun(Weapon):
 		self.probability = 0.25
 
 	def fire(self, ship):
-		self.shootObject(ship, Objects.Bullet, 10, 10, 1, 0.05)
+		self.shootObject(ship, Objects.Bullet, 10, 10, 1.5, 0.05)
 
 class Flamer(Weapon):
 	def init(self):
