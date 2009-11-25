@@ -30,7 +30,8 @@ class Weapon: # A thing that a ship can use
 
 				ship.dx -= self.recoil*math.cos(ship.angle)
 				ship.dy -= self.recoil*math.sin(ship.angle)
-		else:
+
+		if not((not(self.loading) or self.continuousLoad) and self.loaded >= self.activationCost):
 			self.loading = True
 			if not(self.continuousLoad) and self.loaded >= 100:
 				self.loading = False
@@ -73,7 +74,7 @@ class Banana(Weapon):
 		self.recoil = 0.2
 
 	def fire(self, ship):
-		self.shootObject(ship, Objects.Banana, 10, 1, 2, 0.1, 12)
+		self.shootObject(ship, Objects.Banana, 10, 0.75, 2, 0.1, 12)
 
 class MachineGun(Weapon):
 	def init(self):
