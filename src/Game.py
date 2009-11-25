@@ -26,19 +26,7 @@ class Game:
 		self.text4 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 16)
 
 		if Settings.music or Settings.soundEffects:
-			pygame.mixer.quit()
-			pygame.mixer.init(44100, -16, 2, 512)
-
-			pygame.mixer.music.set_volume(Settings.musicVolume)
-			self.music = ""
-
-		if Settings.music:
-			self.music = "victory.ogg"
-			pygame.mixer.music.load(os.path.join("music",self.music))
-			pygame.mixer.music.play(-1)
-
-		if Settings.soundEffects:
-			self.soundExplode = pygame.mixer.Sound(os.path.join("sfx","beep.ogg"))
+			self.initSound()
 
 		self.map = Map()
 
@@ -85,6 +73,33 @@ class Game:
 		else:
 			self.screen = pygame.display.set_mode((Settings.width, Settings.height), screenFlagsCombined)
 
+	def initSound(self):
+		pygame.mixer.quit()
+		pygame.mixer.init(44100, -16, 2, 512)
+
+		pygame.mixer.music.set_volume(Settings.musicVolume)
+		pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
+		self.musicList = []
+
+		if Settings.music:
+			self.loadMusic()
+
+		if Settings.soundEffects:
+			self.soundExplode = pygame.mixer.Sound(os.path.join("sfx","beep.ogg"))
+
+	def loadMusic(self):
+		if len(os.listdir("music")) > 0:
+			if len(self.musicList) == 0:
+				self.musicList = os.listdir("music")
+				random.shuffle(self.musicList)
+
+			self.music = self.musicList.pop()
+			pygame.mixer.music.load(os.path.join("music",self.music))
+
+			pygame.mixer.music.play()
+		else:
+			print "Warning: No music available."
+
 	def scale(self):
 		if Settings.scaleType == 1:
 			pygame.transform.smoothscale(self.screen, (Settings.scale*Settings.width, Settings.scale*Settings.height), self.scaled)
@@ -99,20 +114,20 @@ class Game:
 
 	def handleEvents(self): # Handle keyboard events
 		for event in pygame.event.get():
+			# General events:
+			if event.type == pygame.constants.USEREVENT:
+				self.loadMusic()
 
 			# Global keys:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_F12:
 				pygame.image.save(self.screen, Functions.saveNameIncrement(".", "screen", "png"))
 			elif event.type == pygame.KEYDOWN and event.key == pygame.K_F9:
 				if Settings.music:
-					pygame.mixer.music.stop()
 					Settings.music = False
+					pygame.mixer.music.stop()
 				else:
-					if len(self.music) == 0:
-						self.music = "victory.ogg"
-						pygame.mixer.music.load(os.path.join("music",self.music))
-					pygame.mixer.music.play(-1)
 					Settings.music = True
+					self.initSound()
 			elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN and pygame.key.get_mods() & pygame.KMOD_ALT:
 				if Settings.fullscreen == 1 or Settings.fullscreen == 2:
 					Settings.fullscreen = 0

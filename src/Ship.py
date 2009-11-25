@@ -12,7 +12,7 @@ import Objects
 class Ship(Objects.Object): # Ship
 	def init(self):
 		self.size = 7
-		self.explosionSizeFactor = 1
+		self.explosionSizeFactor = 1.5
 		self.explosionParticleFactor = 5
 
 		self.airResistance = 10
