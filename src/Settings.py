@@ -51,8 +51,8 @@ ships = [ShipTypes.Fighter, ShipTypes.Basher, ShipTypes.Destroyer, ShipTypes.Meg
 keys = []
 keys.append((pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_RCTRL))
 keys.append((pygame.K_w, pygame.K_a, pygame.K_d, pygame.K_s, pygame.K_LCTRL))
-keys.append((pygame.K_KP8, pygame.K_KP4, pygame.K_KP6, pygame.K_KP5, pygame.K_KP_MINUS))
 keys.append((pygame.K_i, pygame.K_j, pygame.K_l, pygame.K_k, pygame.K_n))
+keys.append((pygame.K_KP8, pygame.K_KP4, pygame.K_KP6, pygame.K_KP5, pygame.K_KP_MINUS))
 
 colors = []
 colors.append((255,0,0))

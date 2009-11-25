@@ -171,7 +171,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 		for x in range(left, right):
 			if (x-self.x)/(size+0.01) >= -1:
 				for y in range(int((-math.sin(math.acos((x-self.x)/(size+0.01)))*size)+self.y), int((math.sin(math.acos((x-self.x)/(size+0.01)))*size)+self.y)):
-					if y < map.height and y > 0:
+					if y < map.height and y >= 0:
 						maskValue = map.mask.get_at((x,y))
 						if maskValue != (127, 127, 127, 255) and maskValue != (255, 0, 0, 255) and maskValue != (0, 0, 0, 255):
 							map.mask.set_at((x,y), (0, 0, 0))

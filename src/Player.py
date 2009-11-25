@@ -119,9 +119,10 @@ class Player:
 
 				pygame.draw.rect(self.game.screen, loadColor, ((i*Settings.width/Settings.playerAmount,Settings.height-15+a*5),(int(((weapon.loaded)/100)*Settings.width/Settings.playerAmount),4)))
 
-		if Settings.playerAmount == 3 and i == 2:
-			pygame.draw.line(self.game.screen, (0,0,0), (int((i-1)*Settings.width/Settings.playerAmount),0), (int((i-1)*Settings.width/Settings.playerAmount),Settings.height))
-		pygame.draw.line(self.game.screen, (0,0,0), (int(i*Settings.width/Settings.playerAmount),0), (int(i*Settings.width/Settings.playerAmount),Settings.height))
+		if i > 0:
+			if Settings.playerAmount == 3 and i == 2:
+				pygame.draw.line(self.game.screen, (0,0,0), (int((i-1)*Settings.width/Settings.playerAmount),0), (int((i-1)*Settings.width/Settings.playerAmount),Settings.height))
+			pygame.draw.line(self.game.screen, (0,0,0), (int(i*Settings.width/Settings.playerAmount),0), (int(i*Settings.width/Settings.playerAmount),Settings.height))
 
 		if self.spawnMessage and not(self.winner):
 			self.game.screen.blit(self.game.text.render("Spawning with " + str(self.ship.lightWeapon.name) + " and " + str(self.ship.heavyWeapon.name), True, (255,0,0)), (i*Settings.width/Settings.playerAmount+50,50))
