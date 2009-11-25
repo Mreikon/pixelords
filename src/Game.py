@@ -99,6 +99,28 @@ class Game:
 
 	def handleEvents(self): # Handle keyboard events
 		for event in pygame.event.get():
+
+			# Global keys:
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_F12:
+				pygame.image.save(self.screen, Functions.saveNameIncrement(".", "screen", "png"))
+			elif event.type == pygame.KEYDOWN and event.key == pygame.K_F9:
+				if Settings.music:
+					pygame.mixer.music.stop()
+					Settings.music = False
+				else:
+					if len(self.music) == 0:
+						self.music = "victory.ogg"
+						pygame.mixer.music.load(os.path.join("music",self.music))
+					pygame.mixer.music.play(-1)
+					Settings.music = True
+			elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN and pygame.key.get_mods() & pygame.KMOD_ALT:
+				if Settings.fullscreen == 1 or Settings.fullscreen == 2:
+					Settings.fullscreen = 0
+				elif Settings.fullscreen == 0:
+					Settings.fullscreen = 1
+				self.initScreen()
+
+			# Meny keys:
 			if self.inMenu:
 				if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
 					self.running = False
@@ -106,27 +128,16 @@ class Game:
 				elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
 					for player in self.players:
 						player.event(event)
+
+			# In-game keys
 			else:
 				if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
 					self.__init__()
-				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F9:
-					if Settings.music:
-						pygame.mixer.music.stop()
-						Settings.music = False
-					else:
-						if len(self.music) == 0:
-							self.music = "victory.ogg"
-							pygame.mixer.music.load(os.path.join("music",self.music))
-
-						pygame.mixer.music.play(-1)
-						Settings.music = True
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F10:
 					pygame.image.save(self.map.mask, Functions.saveNameIncrement(".", "mask", "png"))
 					pygame.image.save(self.map.visual, Functions.saveNameIncrement(".", "visual", "png"))
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
 					pygame.image.save(self.map.screenImage, Functions.saveNameIncrement(".", "fullmap", "png"))
-				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F12:
-					pygame.image.save(self.screen, Functions.saveNameIncrement(".", "screen", "png"))
 				elif (event.type == pygame.KEYDOWN or event.type == pygame.KEYUP) and not(self.gameOver):
 					for player in self.players:
 						if player.ship.active:
