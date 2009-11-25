@@ -88,9 +88,9 @@ class Game:
 			self.soundExplode = pygame.mixer.Sound(os.path.join("sfx","beep.ogg"))
 
 	def loadMusic(self):
-		if len(os.listdir("music")) > 0:
+		if len(Functions.getSpecificFiles("music", "ogg")) > 0:
 			if len(self.musicList) == 0:
-				self.musicList = os.listdir("music")
+				self.musicList = Functions.getSpecificFiles("music", "ogg")
 				random.shuffle(self.musicList)
 
 			self.music = self.musicList.pop()
