@@ -21,8 +21,8 @@ scaleType = config.getint("Screen", "scaleType")
 showFPS = config.getboolean("Screen", "showFPS")						
 
 # Sound:
+sound = config.getboolean("Sound", "enabled")
 music = config.getboolean("Sound", "music")
-soundEffects = config.getboolean("Sound", "soundEffects")
 musicVolume = config.getfloat("Sound", "musicVolume")
 
 # Game rules:

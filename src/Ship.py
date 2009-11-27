@@ -25,8 +25,8 @@ class Ship(Objects.Object): # Ship
 		self.isSprite = True
 		self.isShip = True
 
-		self.lightWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)]()
-		self.heavyWeapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)]()
+		self.lightWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)](self.game)
+		self.heavyWeapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)](self.game)
 
 	def setShipType(self, shipType):
 		self.shipModel = shipType()
@@ -80,8 +80,8 @@ class Ship(Objects.Object): # Ship
 	def destroy(self, map):
 		if self.active:
 			if Settings.resetWeaponsOnDeath:
-				self.lightWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)]()
-				self.heavyWeapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)]()
+				self.lightWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)](self.game)
+				self.heavyWeapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)](self.game)
 
 			map.redraw((self.x-2*self.size-10,self.y-2*self.size-10),(2*(self.size+10),2*(self.size+10)))
 			self.active = False

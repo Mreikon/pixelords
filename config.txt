@@ -9,8 +9,8 @@ scaleType: 0
 showFPS: false
 
 [Sound]
+enabled: true
 music: true
-soundEffects: true
 musicVolume: 0.5
 
 [Game rules]

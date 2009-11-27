@@ -5,15 +5,21 @@ import random
 
 import Settings
 import Objects
+import Sound
 
 class Weapon: # A thing that a ship can use
-	def __init__(self):
+	def __init__(self, game):
+		self.game = game
+
 		self.loaded = 100.0
 		self.loadSpeed = 1
 		self.loading = True
 		self.activationCost = 100
 		self.continuousLoad = False
 		self.probability = 1
+		self.shotDelay = 0
+		self.shotDelayVariation = 0
+		self.shotDelayStatus = 0
 
 		self.recoil = 0
 
@@ -23,10 +29,18 @@ class Weapon: # A thing that a ship can use
 		pass
 
 	def activate(self, ship):
-		if (not(self.loading) or self.continuousLoad) and self.loaded >= self.activationCost:
+		if (not(self.loading) or self.continuousLoad) and self.loaded >= self.activationCost and self.shotDelayStatus == 0:
 			if self.probability == 1 or random.uniform(0,1) < self.probability:
 				self.loaded -= self.activationCost
+				self.shotDelayStatus = self.shotDelay + random.randint(-self.shotDelayVariation,self.shotDelayVariation)
+
 				self.fire(ship)
+
+				if Settings.sound:
+					try:
+						self.sound.play()																		
+					except:
+						pass
 
 				ship.dx -= self.recoil*math.cos(ship.angle)
 				ship.dy -= self.recoil*math.sin(ship.angle)
@@ -49,11 +63,15 @@ class Weapon: # A thing that a ship can use
 		if self.loading and self.loaded < 100:
 			self.loaded += self.loadSpeed*(Settings.loadingSpeed/100.0)*(ship.loadingSpeed/100.0)
 
+		if self.shotDelayStatus > 0:
+			self.shotDelayStatus -= 1
+
 class Cannon(Weapon):
 	def init(self):
 		self.name = "Cannon"
 		self.loadSpeed = 0.75
 		self.recoil = 1
+		self.sound = self.game.sound.blast
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Cannonball, 12, 3)
@@ -65,7 +83,7 @@ class Shotgun(Weapon):
 		self.recoil = 0.5
 
 	def fire(self, ship):
-		self.shootObject(ship, Objects.Bullet, 10, 3, 2, 0.1, 10)
+		self.shootObject(ship, Objects.Bullet, 10, 3, 2, 0.1, 7)
 
 class Banana(Weapon):
 	def init(self):
@@ -82,11 +100,13 @@ class MachineGun(Weapon):
 		self.loadSpeed = 0.3
 		self.loading = False
 		self.recoil = 0.075
-		self.activationCost = 1.5
-		self.probability = 0.25
+		self.activationCost = 3
+		self.shotDelay = 10
+		self.shotDelayVariation = 5
+		self.sound = self.game.sound.burst
 
 	def fire(self, ship):
-		self.shootObject(ship, Objects.Bullet, 10, 10, 1.5, 0.05)
+		self.shootObject(ship, Objects.Bullet, 10, 10, 1.5, 0.025)
 
 class Flamer(Weapon):
 	def init(self):
@@ -113,6 +133,7 @@ class Rifle(Weapon):
 		self.name = "Rifle"
 		self.loadSpeed = 0.5
 		self.recoil = 2
+		self.sound = self.game.sound.gunShot
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.RifleBullet, 10, 10)
@@ -183,6 +204,7 @@ class Mine(Weapon):
 	def init(self):
 		self.name = "Mine"
 		self.loadSpeed = 0.1
+		self.sound = self.game.sound.activation
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Mine, -20, 0)

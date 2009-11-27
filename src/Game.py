@@ -9,6 +9,7 @@ import Settings
 import Functions
 import Objects
 import Player
+import Sound
 
 class Game:
 	def __init__(self): # Initialization
@@ -25,8 +26,7 @@ class Game:
 		self.text3 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 42)
 		self.text4 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 16)
 
-		if Settings.music or Settings.soundEffects:
-			self.initSound()
+		self.sound = Sound.Sound()
 
 		self.map = Map()
 
@@ -72,33 +72,6 @@ class Game:
 			self.screen = pygame.transform.scale(self.scaled, (Settings.width, Settings.height))
 		else:
 			self.screen = pygame.display.set_mode((Settings.width, Settings.height), screenFlagsCombined)
-
-	def initSound(self):
-		pygame.mixer.quit()
-		pygame.mixer.init(44100, -16, 2, 512)
-
-		pygame.mixer.music.set_volume(Settings.musicVolume)
-		pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
-		self.musicList = []
-
-		if Settings.music:
-			self.loadMusic()
-
-		if Settings.soundEffects:
-			self.soundExplode = pygame.mixer.Sound(os.path.join("sfx","beep.ogg"))
-
-	def loadMusic(self):
-		if len(Functions.getSpecificFiles("music", "ogg")) > 0:
-			if len(self.musicList) == 0:
-				self.musicList = Functions.getSpecificFiles("music", "ogg")
-				random.shuffle(self.musicList)
-
-			self.music = self.musicList.pop()
-			pygame.mixer.music.load(os.path.join("music",self.music))
-
-			pygame.mixer.music.play()
-		else:
-			print "Warning: No music available."
 
 	def scale(self):
 		if Settings.scaleType == 1:

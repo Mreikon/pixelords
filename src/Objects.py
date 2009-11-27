@@ -7,6 +7,7 @@ import random
 
 import Settings
 import Functions
+import Sound
 
 class Object(pygame.sprite.Sprite): # Parent class for all objects
 	def __init__(self, game, x=0,y=0, dx=0,dy=0, color=(100,100,100)): # Give default values
@@ -155,8 +156,8 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 	def explode(self,map): # Explode
 		size = self.explosionSizeFactor*self.size
 
-		if Settings.soundEffects and size > 10:
-			self.game.soundExplode.play()
+		if Settings.sound and size > 10:
+			self.playSound(self.game.sound.explosion)
 
 		if int(self.x+size) > map.width:
 			right = map.width
@@ -212,6 +213,13 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 		self.x = x
 		self.y = y
 
+	def playSound(self, sound):
+		if Settings.sound:
+			try:
+				sound.play()																		
+			except:
+				pass
+
 class RepairKit(Object):
 	def init(self):
 		self.gravity = False
@@ -241,9 +249,9 @@ class WeaponChanger(Object):
 		self.size = 10
 		self.heavy = random.randint(0,1)
 		if self.heavy:
-			self.newWeapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)]()
+			self.newWeapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)](self.game)
 		else:
-			self.newWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)]()
+			self.newWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)](self.game)
 		
 		self.randomizeLocation(self.game.map)
 
@@ -559,6 +567,8 @@ class Dirtball(BombParticle):
 							map.visual.set_at((x,y),(150+rand,90+rand,20+rand,255))
 							map.screenImage.set_at((x,y),(150+rand,90+rand,20+rand,255))
 
+		self.playSound(self.game.sound.dirt)
+
 		self.destroy(map)
 
 class Disruptionball(BombParticle):
@@ -655,7 +665,7 @@ class Bullet(BombParticle):
 		self.shipExplode = False
 
 		self.size = 2
-		self.shipDamage = 4
+		self.shipDamage = 6
 
 class Shard(BombParticle):
 	def init2(self):
