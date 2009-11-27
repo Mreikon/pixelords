@@ -23,6 +23,7 @@ class Sound:
 		self.gunShot = pygame.mixer.Sound(os.path.join("sfx","gunshot.ogg"))
 		self.burst = pygame.mixer.Sound(os.path.join("sfx","burst.ogg"))
 		self.blast = pygame.mixer.Sound(os.path.join("sfx","blast.ogg"))
+		self.shotgun = pygame.mixer.Sound(os.path.join("sfx","shotgun.ogg"))
 		self.dirt = pygame.mixer.Sound(os.path.join("sfx","dirt.ogg"))
 		self.activation = pygame.mixer.Sound(os.path.join("sfx","activation.ogg"))
 

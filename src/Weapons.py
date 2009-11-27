@@ -81,6 +81,7 @@ class Shotgun(Weapon):
 		self.name = "Shotgun"
 		self.loadSpeed = 1.5
 		self.recoil = 0.5
+		self.sound = self.game.sound.shotgun
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Bullet, 10, 3, 2, 0.1, 7)
@@ -101,7 +102,7 @@ class MachineGun(Weapon):
 		self.loading = False
 		self.recoil = 0.075
 		self.activationCost = 3
-		self.shotDelay = 10
+		self.shotDelay = 8
 		self.shotDelayVariation = 5
 		self.sound = self.game.sound.burst
 
