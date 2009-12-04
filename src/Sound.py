@@ -9,7 +9,6 @@ import Functions
 
 class Sound:
 	def __init__(self):
-		pygame.mixer.quit()
 		pygame.mixer.init(44100, -16, 2, 512)
 
 		pygame.mixer.music.set_volume(Settings.musicVolume)

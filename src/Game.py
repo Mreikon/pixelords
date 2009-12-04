@@ -99,12 +99,15 @@ class Game:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_F12:
 				pygame.image.save(self.screen, Functions.saveNameIncrement(".", "screen", "png"))
 			elif event.type == pygame.KEYDOWN and event.key == pygame.K_F9:
-				if Settings.music:
-					Settings.music = False
-					pygame.mixer.music.stop()
+				if Settings.sound:
+					if Settings.music:
+						Settings.music = False
+						pygame.mixer.music.stop()
+					else:
+						Settings.music = True
+						self.sound.loadMusic()
 				else:
-					Settings.music = True
-					self.initSound()
+					print "Warning: Can't enable music (sounds are not enabled)"
 			elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN and pygame.key.get_mods() & pygame.KMOD_ALT:
 				if Settings.fullscreen == 1 or Settings.fullscreen == 2:
 					Settings.fullscreen = 0
