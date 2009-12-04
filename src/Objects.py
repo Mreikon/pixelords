@@ -188,8 +188,11 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 				object.dy += 0.01*(size**2-distance)*(object.y-self.y)/math.sqrt((object.x-self.x+0.01)**2+(object.y-self.y)**2)
 
 		for i in range(self.explosionParticleFactor*int(self.size)):
-			dx = random.uniform(-2,2)
-			dy = random.uniform(-2,2)
+			angle = random.uniform(0,2*math.pi)
+			speed = random.uniform(0.1,3.5)
+			dx = speed*math.cos(angle)
+			dy = speed*math.sin(angle)
+
 			self.game.objects.append(Shard(self.game,self.x+5*dx,self.y+5*dy, dx, dy))
 
 		self.destroy(map)
@@ -212,13 +215,6 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 
 		self.x = x
 		self.y = y
-
-	def playSound(self, sound):
-		if Settings.sound:
-			try:
-				sound.play()																		
-			except:
-				pass
 
 class RepairKit(Object):
 	def init(self):
@@ -567,7 +563,7 @@ class Dirtball(BombParticle):
 							map.visual.set_at((x,y),(150+rand,90+rand,20+rand,255))
 							map.screenImage.set_at((x,y),(150+rand,90+rand,20+rand,255))
 
-		self.playSound(self.game.sound.dirt)
+		Sound.playSound(self.game, 5)
 
 		self.destroy(map)
 
