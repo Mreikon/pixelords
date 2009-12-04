@@ -7,6 +7,7 @@ import random
 
 import Settings
 import Functions
+import Messages
 import Objects
 import Player
 import Sound
@@ -28,6 +29,8 @@ class Game:
 
 		if Settings.sound:
 			self.sound = Sound.Sound()
+
+		self.messageBox = Messages.MessageBox()
 
 		self.map = Map()
 
@@ -122,6 +125,10 @@ class Game:
 			else:
 				if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
 					self.__init__()
+				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F1:
+					self.messageBox.showForce = True
+				elif event.type == pygame.KEYUP and event.key == pygame.K_F1:
+					self.messageBox.showForce = False
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F10:
 					pygame.image.save(self.map.mask, Functions.saveNameIncrement(".", "mask", "png"))
 					pygame.image.save(self.map.visual, Functions.saveNameIncrement(".", "visual", "png"))
@@ -138,8 +145,11 @@ class Game:
 				self.bonusTimer = Settings.bonusDelay
 				if random.randint(0,1):
 					self.objects.append(Objects.RepairKit(self))
+					self.messageBox.addMessage("Repair kit spawned.")
 				else:
 					self.objects.append(Objects.WeaponChanger(self))
+					self.messageBox.addMessage("Weapon changer spawned.")
+
 			else:
 				self.bonusTimer -= 1
 
@@ -158,6 +168,8 @@ class Game:
 					player.menuCheck()
 				if menuPlayers <= 0:
 					self.inMenu = False
+					self.messageBox.addMessage("Round started!")
+
 					for player in self.players:
 						player.createShip()
 			else:
@@ -184,6 +196,9 @@ class Game:
 				# Draw screens for each player
 				for i,player2 in enumerate(self.players):
 					player2.drawHUD(self.map, i)
+
+				self.messageBox.draw(self)
+
 			self.handleEvents()
 
 			self.checkBonusSpawn()
