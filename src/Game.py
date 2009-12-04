@@ -21,12 +21,13 @@ class Game:
 
 		pygame.font.init()
 
-		self.text = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 22)
-		self.text2 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 54)
-		self.text3 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 42)
-		self.text4 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 16)
+		self.text = pygame.font.Font(os.path.join("resources","LiberationSans-Bold.ttf"), 16)
+		self.text2 = pygame.font.Font(os.path.join("resources","LiberationSans-Bold.ttf"), 42)
+		self.text3 = pygame.font.Font(os.path.join("resources","LiberationSans-Bold.ttf"), 32)
+		self.text4 = pygame.font.Font(os.path.join("resources","LiberationSans-Bold.ttf"), 12)
 
-		self.sound = Sound.Sound()
+		if Settings.sound:
+			self.sound = Sound.Sound()
 
 		self.map = Map()
 
