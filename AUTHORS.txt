@@ -5,6 +5,7 @@ War of Pixelords was started by Lauri Niskanen on October 29, 2009.
 
 Developers:
   - Lauri Niskanen <ape@ape3000.com>
+  - Antti Aalto <antti.aalto.10@gmail.com>
 
 Sound:
   - Under the license Creative Commons Sampling Plus 1.0:
@@ -24,7 +25,6 @@ Sound:
         - explosion.ogg
 
 Dedicated testers and content creators:
-  - Antti Aalto
   - Oscar Calderon
   - Mikael Filppula
   - Antti Kätkytniemi
