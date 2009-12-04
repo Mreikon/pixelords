@@ -31,6 +31,7 @@ class Game:
 			self.sound = Sound.Sound()
 
 		self.messageBox = Messages.MessageBox()
+		self.infoOverlay = Messages.InfoOverlay()
 
 		self.map = Map()
 
@@ -97,8 +98,10 @@ class Game:
 
 			# Global keys:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_F12:
-				pygame.image.save(self.screen, Functions.saveNameIncrement(".", "screen", "png"))
-			elif event.type == pygame.KEYDOWN and event.key == pygame.K_F9:
+				path = Functions.saveNameIncrement("screenshots", "screen", "png")
+				pygame.image.save(self.screen, path)
+				self.messageBox.addMessage("Screenshot saved to " + path + ".")
+			elif event.type == pygame.KEYDOWN and event.key == pygame.K_F5:
 				if Settings.sound:
 					if Settings.music:
 						Settings.music = False
@@ -130,13 +133,24 @@ class Game:
 					self.__init__()
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F1:
 					self.messageBox.showForce = True
+					self.infoOverlay.show = True
 				elif event.type == pygame.KEYUP and event.key == pygame.K_F1:
 					self.messageBox.showForce = False
+					self.infoOverlay.show = False
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F10:
-					pygame.image.save(self.map.mask, Functions.saveNameIncrement(".", "mask", "png"))
-					pygame.image.save(self.map.visual, Functions.saveNameIncrement(".", "visual", "png"))
+					path = os.path.join("maps", "saved")
+					try:
+						os.mkdir(path)
+					except:
+						pass
+					pygame.image.save(self.map.mask, os.path.join(path, "mask.png"))
+					pygame.image.save(self.map.visual, os.path.join(path, "visual.png"))
+					pygame.image.save(self.map.background, os.path.join(path, "background.png"))
+					self.messageBox.addMessage("Current map saved to " + path + ".")
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-					pygame.image.save(self.map.screenImage, Functions.saveNameIncrement(".", "fullmap", "png"))
+					path = Functions.saveNameIncrement("screenshots", "fullmap", "png")
+					pygame.image.save(self.map.screenImage, path)
+					self.messageBox.addMessage("Screenshot saved to " + path + ".")
 				elif (event.type == pygame.KEYDOWN or event.type == pygame.KEYUP) and not(self.gameOver):
 					for player in self.players:
 						if player.ship.active:
@@ -201,6 +215,7 @@ class Game:
 					player2.drawHUD(self.map, i)
 
 				self.messageBox.draw(self)
+				self.infoOverlay.draw(self)
 
 			self.handleEvents()
 
