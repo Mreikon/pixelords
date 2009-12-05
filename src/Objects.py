@@ -193,7 +193,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 			dx = speed*math.cos(angle)
 			dy = speed*math.sin(angle)
 
-			self.game.objects.append(Shard(self.game,self.x+5*dx,self.y+5*dy, dx, dy))
+			self.game.objects.append(Shard(self.game,self.x+5*dx,self.y+5*dy, dx+self.dx/2, dy+self.dy/2))
 
 		self.destroy(map)
 
@@ -221,6 +221,7 @@ class RepairKit(Object):
 		self.gravity = False
 		self.explosionCollision = False
 		self.explosionSizeFactor = 0
+		self.explosionParticleFactor = 0
 		self.size = 10
 
 		self.randomizeLocation(self.game.map)
@@ -242,6 +243,7 @@ class WeaponChanger(Object):
 	def init(self):
 		self.gravity = False
 		self.explosionSizeFactor = 0
+		self.explosionParticleFactor = 0
 		self.size = 10
 		self.heavy = random.randint(0,1)
 		if self.heavy:
@@ -513,7 +515,7 @@ class Cannonball(BombParticle):
 	def init2(self):
 		self.size = 4
 		self.explosionSizeFactor = 4
-		self.explosionParticleFactor = 2
+		self.explosionParticleFactor = 3
 
 		self.airResistance = 5
 
