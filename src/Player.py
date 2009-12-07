@@ -16,8 +16,9 @@ class Player:
 		self.color = color
 
 		self.lives = Settings.lives
-		self.active = True
+		self.kills = 0
 
+		self.active = True
 		self.winner = False
 
 		self.shoot1 = False
@@ -26,7 +27,6 @@ class Player:
 		self.respawnWait = 200
 
 		self.menuStage = 1
-
 		self.menu = Menus.shipChooser()
 
 	def menuCheck(self):
@@ -66,8 +66,9 @@ class Player:
 							game.messageBox.addMessage(self.name + " killed himself. ")
 						else:
 							try:
+								self.ship.lastHitter.kills += 1
 								game.messageBox.addMessage(self.name + " was killed by " + self.ship.lastHitter.name + ".")
-							except:
+							except AttributeError:
 								game.messageBox.addMessage(self.name + " died. ")
 
 						self.ship.lastHitter = None
