@@ -161,10 +161,10 @@ class Game:
 			if self.bonusTimer <= 0:
 				self.bonusTimer = Settings.bonusDelay
 				if random.randint(0,1):
-					self.objects.append(Objects.RepairKit(self, -1))
+					self.objects.append(Objects.RepairKit(self, None))
 					self.messageBox.addMessage("Repair kit spawned.")
 				else:
-					self.objects.append(Objects.WeaponChanger(self, -1))
+					self.objects.append(Objects.WeaponChanger(self, None))
 					self.messageBox.addMessage("Weapon changer spawned.")
 			else:
 				self.bonusTimer -= 1
