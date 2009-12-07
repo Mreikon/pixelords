@@ -10,9 +10,11 @@ import Functions
 import Sound
 
 class Object(pygame.sprite.Sprite): # Parent class for all objects
-	def __init__(self, game, x=0,y=0, dx=0,dy=0, color=(100,100,100)): # Give default values
+	def __init__(self, game, owner, x=0,y=0, dx=0,dy=0, color=(100,100,100)): # Give default values
 		self.game = game
 		self.active = True
+
+		self.owner = owner
 
 		self.x = x
 		self.y = y
@@ -190,7 +192,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 		for i in range(self.explosionParticleFactor*int(self.size)):
 			dx = random.uniform(-2,2)
 			dy = random.uniform(-2,2)
-			self.game.objects.append(Shard(self.game,self.x+5*dx,self.y+5*dy, dx, dy))
+			self.game.objects.append(Shard(self.game, self.owner, self.x+5*dx,self.y+5*dy, dx, dy))
 
 		self.destroy(map)
 
@@ -216,7 +218,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 	def playSound(self, sound):
 		if Settings.sound:
 			try:
-				sound.play()																		
+				sound.play()
 			except:
 				pass
 
@@ -252,7 +254,7 @@ class WeaponChanger(Object):
 			self.newWeapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)](self.game)
 		else:
 			self.newWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)](self.game)
-		
+
 		self.randomizeLocation(self.game.map)
 
 		self.sprite("weaponbox.png")
@@ -413,6 +415,7 @@ class Flame(Object):
 
 	def onShipHit(self,map,ship):
 		ship.hp -= 0.75
+		ship.lastHitter = self.owner
 		self.destroy(map)
 
 	def onGroundHit(self,map,x,y):
@@ -430,6 +433,7 @@ class Laser(Object):
 
 	def onShipHit(self,map,ship):
 		ship.hp -= 0.5
+		ship.lastHitter = self.owner
 
 	def draw(self, map):
 		x = self.x
@@ -489,6 +493,8 @@ class BombParticle(Object): # Class for any kinds of bombs
 
 	def onShipHit(self,map,ship):
 		ship.hp -= self.shipDamage
+
+		ship.lastHitter = self.owner
 
 		if self.shipExplode:
 			self.onGroundHit(map,self.x,self.y)

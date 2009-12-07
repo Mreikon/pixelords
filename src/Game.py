@@ -136,9 +136,9 @@ class Game:
 			if self.bonusTimer <= 0:
 				self.bonusTimer = Settings.bonusDelay
 				if random.randint(0,1):
-					self.objects.append(Objects.RepairKit(self))
+					self.objects.append(Objects.RepairKit(self, -1))
 				else:
-					self.objects.append(Objects.WeaponChanger(self))
+					self.objects.append(Objects.WeaponChanger(self, -1))
 			else:
 				self.bonusTimer -= 1
 

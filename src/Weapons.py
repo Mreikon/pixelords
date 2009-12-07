@@ -56,7 +56,7 @@ class Weapon: # A thing that a ship can use
 	def shootObject(self, ship, object, offset, speed, speedDeviationFactor=1, spread=0, amount=1, shipSpeedEffect=1):
 		for i in range(amount):
 			angle = ship.angle + random.uniform(-spread,spread)
-			ship.game.objects.append(object(ship.game, ship.x+ship.dx+offset*math.cos(angle), ship.y+ship.dy+offset*math.sin(angle),
+			ship.game.objects.append(object(ship.game, ship.owner, ship.x+ship.dx+offset*math.cos(angle), ship.y+ship.dy+offset*math.sin(angle),
 				shipSpeedEffect*ship.dx+random.uniform(1,speedDeviationFactor)*speed*math.cos(angle), shipSpeedEffect*ship.dy+random.uniform(1,speedDeviationFactor)*speed*math.sin(angle)))
 
 	def check(self, ship):
@@ -145,7 +145,7 @@ class Bomber(Weapon):
 		self.loadSpeed = 0.5
 
 	def fire(self, ship):
-		ship.game.objects.append(Objects.Bomb(ship.game, ship.x+ship.dx, ship.y+ship.dy+15, ship.dx, ship.dy+0.5))
+		ship.game.objects.append(Objects.Bomb(ship.game, ship.owner, ship.x+ship.dx, ship.y+ship.dy+15, ship.dx, ship.dy+0.5))
 
 class Backshot(Weapon):
 	def init(self):
@@ -166,7 +166,7 @@ class Reverse(Weapon):
 
 	def fire(self, ship):
 		if random.uniform(0,1) < 0.5:
-			ship.game.objects.append(Objects.ThrustFlame(ship.game, ship.x-2*ship.dx+12*math.cos(ship.angle), ship.y-2*ship.dy+12*math.sin(ship.angle), ship.dx+1*math.cos(ship.angle), ship.dy+1*math.sin(ship.angle)))
+			ship.game.objects.append(Objects.ThrustFlame(ship.game, ship.owner, ship.x-2*ship.dx+12*math.cos(ship.angle), ship.y-2*ship.dy+12*math.sin(ship.angle), ship.dx+1*math.cos(ship.angle), ship.dy+1*math.sin(ship.angle)))
 
 class Dirt(Weapon):
 	def init(self):

@@ -40,7 +40,7 @@ class Player:
 
 	def createShip(self):
 		self.spawnMessage = True
-		self.ship = Ship.Ship(self.game, 0,0,0,0, self.color)
+		self.ship = Ship.Ship(self.game, self, 0,0,0,0, self.color)
 		self.ship.setShipType(self.shipType)
 		self.ship.active = False
 		self.game.objects.append(self.ship)
@@ -60,6 +60,14 @@ class Player:
 
 					if self.respawnWait == 299:
 						self.lives -= 1
+
+						if self.ship == self.ship.lastHitter:
+							print "Suicide!"
+						else:
+							try:
+								print str(self.ship.color) + " was killed by " + str(self.ship.lastHitter.color)
+							except:
+								print "Suicide!"
 
 						self.spawnMessage = True
 						self.shoot1 = False

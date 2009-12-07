@@ -15,6 +15,8 @@ class Ship(Objects.Object): # Ship
 		self.explosionSizeFactor = 1.5
 		self.explosionParticleFactor = 5
 
+		self.lastHitter = None
+
 		self.airResistance = 10
 
 		self.thrust = False
@@ -69,11 +71,11 @@ class Ship(Objects.Object): # Ship
 
 		if self.thrust:
 			if random.uniform(0,1) < 0.5:
-				self.game.objects.append(Objects.ThrustFlame(self.game, self.x-2*self.dx-12*math.cos(self.angle), self.y-2*self.dy-12*math.sin(self.angle), self.dx-1*math.cos(self.angle), self.dy-1*math.sin(self.angle)))
+				self.game.objects.append(Objects.ThrustFlame(self.game, self.owner, self.x-2*self.dx-12*math.cos(self.angle), self.y-2*self.dy-12*math.sin(self.angle), self.dx-1*math.cos(self.angle), self.dy-1*math.sin(self.angle)))
 
 		if self.hp < self.shipModel.hp/6:
 			if random.uniform(0,1) < 0.2:
-				self.game.objects.append(Objects.Smoke(self.game, self.x, self.y))
+				self.game.objects.append(Objects.Smoke(self.game, self.owner, self.x, self.y))
 
 		self.spriteDraw(map)
 
