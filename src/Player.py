@@ -9,9 +9,10 @@ import Objects
 import Ship
 
 class Player:
-	def __init__(self, game, keys, color):
+	def __init__(self, game, keys, name, color):
 		self.game = game
 		self.keys = keys
+		self.name = name
 		self.color = color
 
 		self.lives = Settings.lives
@@ -61,13 +62,13 @@ class Player:
 					if self.respawnWait == 299:
 						self.lives -= 1
 
-						if self.ship == self.ship.lastHitter:
-							game.messageBox.addMessage(str(self.ship.color) + " killed himself. ")
+						if self == self.ship.lastHitter:
+							game.messageBox.addMessage(self.name + " killed himself. ")
 						else:
 							try:
-								game.messageBox.addMessage(str(self.ship.color) + " was killed by " + str(self.ship.lastHitter.color) + ".")
+								game.messageBox.addMessage(self.name + " was killed by " + self.ship.lastHitter.name + ".")
 							except:
-								game.messageBox.addMessage(str(self.ship.color) + " died. ")
+								game.messageBox.addMessage(self.name + " died. ")
 
 						self.ship.lastHitter = None
 

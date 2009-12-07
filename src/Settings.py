@@ -18,7 +18,7 @@ hwAcceleration = config.getboolean("Screen", "hwAcceleration")
 doubleBuffering = config.getboolean("Screen", "doubleBuffering")
 scale = config.getfloat("Screen", "scaleFactor")
 scaleType = config.getint("Screen", "scaleType")
-showFPS = config.getboolean("Screen", "showFPS")						
+showFPS = config.getboolean("Screen", "showFPS")
 
 # Sound:
 sound = config.getboolean("Sound", "enabled")
@@ -53,6 +53,12 @@ keys.append((pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_DOWN, pygame.K
 keys.append((pygame.K_w, pygame.K_a, pygame.K_d, pygame.K_s, pygame.K_LCTRL))
 keys.append((pygame.K_i, pygame.K_j, pygame.K_l, pygame.K_k, pygame.K_n))
 keys.append((pygame.K_KP8, pygame.K_KP4, pygame.K_KP6, pygame.K_KP5, pygame.K_KP_MINUS))
+
+names = []
+names.append("Player 1")
+names.append("Player 2")
+names.append("Player 3")
+names.append("Player 4")
 
 colors = []
 colors.append((255,0,0))

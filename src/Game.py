@@ -39,7 +39,7 @@ class Game:
 		self.players = []
 
 		for i in range(Settings.playerAmount-1,-1,-1):
-			self.players.append(Player.Player(self, Settings.keys[i], Settings.colors[i]))
+			self.players.append(Player.Player(self, Settings.keys[i], Settings.names[i], Settings.colors[i]))
 
 		self.bonusTimer = Settings.bonusDelay
 
