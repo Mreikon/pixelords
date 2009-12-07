@@ -7,6 +7,7 @@ import random
 
 import Settings
 import Functions
+import Messages
 import Objects
 import Player
 import Sound
@@ -21,12 +22,16 @@ class Game:
 
 		pygame.font.init()
 
-		self.text = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 22)
-		self.text2 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 54)
-		self.text3 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 42)
-		self.text4 = pygame.font.SysFont(os.path.join("resources","VeraMono.ttf"), 16)
+		self.text = pygame.font.Font(os.path.join("resources","LiberationSans-Bold.ttf"), 16)
+		self.text2 = pygame.font.Font(os.path.join("resources","LiberationSans-Bold.ttf"), 42)
+		self.text3 = pygame.font.Font(os.path.join("resources","LiberationSans-Bold.ttf"), 32)
+		self.text4 = pygame.font.Font(os.path.join("resources","LiberationSans-Bold.ttf"), 12)
 
-		self.sound = Sound.Sound()
+		if Settings.sound:
+			self.sound = Sound.Sound()
+
+		self.messageBox = Messages.MessageBox()
+		self.infoOverlay = Messages.InfoOverlay()
 
 		self.map = Map()
 
@@ -93,14 +98,19 @@ class Game:
 
 			# Global keys:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_F12:
-				pygame.image.save(self.screen, Functions.saveNameIncrement(".", "screen", "png"))
-			elif event.type == pygame.KEYDOWN and event.key == pygame.K_F9:
-				if Settings.music:
-					Settings.music = False
-					pygame.mixer.music.stop()
+				path = Functions.saveNameIncrement("screenshots", "screen", "png")
+				pygame.image.save(self.screen, path)
+				self.messageBox.addMessage("Screenshot saved to " + path + ".")
+			elif event.type == pygame.KEYDOWN and event.key == pygame.K_F5:
+				if Settings.sound:
+					if Settings.music:
+						Settings.music = False
+						pygame.mixer.music.stop()
+					else:
+						Settings.music = True
+						self.sound.loadMusic()
 				else:
-					Settings.music = True
-					self.initSound()
+					print "Warning: Can't enable music (sounds are not enabled)"
 			elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN and pygame.key.get_mods() & pygame.KMOD_ALT:
 				if Settings.fullscreen == 1 or Settings.fullscreen == 2:
 					Settings.fullscreen = 0
@@ -121,11 +131,26 @@ class Game:
 			else:
 				if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
 					self.__init__()
+				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F1:
+					self.messageBox.showForce = True
+					self.infoOverlay.show = True
+				elif event.type == pygame.KEYUP and event.key == pygame.K_F1:
+					self.messageBox.showForce = False
+					self.infoOverlay.show = False
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F10:
-					pygame.image.save(self.map.mask, Functions.saveNameIncrement(".", "mask", "png"))
-					pygame.image.save(self.map.visual, Functions.saveNameIncrement(".", "visual", "png"))
+					path = os.path.join("maps", "saved")
+					try:
+						os.mkdir(path)
+					except:
+						pass
+					pygame.image.save(self.map.mask, os.path.join(path, "mask.png"))
+					pygame.image.save(self.map.visual, os.path.join(path, "visual.png"))
+					pygame.image.save(self.map.background, os.path.join(path, "background.png"))
+					self.messageBox.addMessage("Current map saved to " + path + ".")
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-					pygame.image.save(self.map.screenImage, Functions.saveNameIncrement(".", "fullmap", "png"))
+					path = Functions.saveNameIncrement("screenshots", "fullmap", "png")
+					pygame.image.save(self.map.screenImage, path)
+					self.messageBox.addMessage("Screenshot saved to " + path + ".")
 				elif (event.type == pygame.KEYDOWN or event.type == pygame.KEYUP) and not(self.gameOver):
 					for player in self.players:
 						if player.ship.active:
@@ -137,8 +162,10 @@ class Game:
 				self.bonusTimer = Settings.bonusDelay
 				if random.randint(0,1):
 					self.objects.append(Objects.RepairKit(self, -1))
+					self.messageBox.addMessage("Repair kit spawned.")
 				else:
 					self.objects.append(Objects.WeaponChanger(self, -1))
+					self.messageBox.addMessage("Weapon changer spawned.")
 			else:
 				self.bonusTimer -= 1
 
@@ -157,6 +184,8 @@ class Game:
 					player.menuCheck()
 				if menuPlayers <= 0:
 					self.inMenu = False
+					self.messageBox.addMessage("Round started!")
+
 					for player in self.players:
 						player.createShip()
 			else:
@@ -183,6 +212,10 @@ class Game:
 				# Draw screens for each player
 				for i,player2 in enumerate(self.players):
 					player2.drawHUD(self.map, i)
+
+				self.messageBox.draw(self)
+				self.infoOverlay.draw(self)
+
 			self.handleEvents()
 
 			self.checkBonusSpawn()

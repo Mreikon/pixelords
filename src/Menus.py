@@ -48,17 +48,17 @@ class shipChooser(Menu):
 
 		game.screen.blit(pygame.transform.scale(pygame.image.load(Functions.gfxPath(Settings.ships[self.shipNum]().image)), (200,150)),(i*Settings.width/Settings.playerAmount+25,25))
 
-		game.screen.blit(game.text2.render(Settings.ships[self.shipNum]().name, True, (0,255,0)), (i*Settings.width/Settings.playerAmount+25,200))
+		game.screen.blit(game.text2.render(Settings.ships[self.shipNum]().name, True, (0,255,0)), (i*Settings.width/Settings.playerAmount+25,190))
 
-		game.screen.blit(game.text.render("Strenght:", True, (255,255,255)), (i*Settings.width/Settings.playerAmount+50,250))
+		game.screen.blit(game.text.render("Strenght:", True, (255,255,255)), (i*Settings.width/Settings.playerAmount+50,245))
 		for x in range(Settings.ships[self.shipNum]().strength):
 			pygame.draw.rect(game.screen, (255,0,0), ((i*Settings.width/Settings.playerAmount+x*15+75,270),(10,20)))
 
-		game.screen.blit(game.text.render("Acceleration:", True, (255,255,255)), (i*Settings.width/Settings.playerAmount+50,300))
+		game.screen.blit(game.text.render("Acceleration:", True, (255,255,255)), (i*Settings.width/Settings.playerAmount+50,295))
 		for x in range(Settings.ships[self.shipNum]().acceleration):
 			pygame.draw.rect(game.screen, (255,0,0), ((i*Settings.width/Settings.playerAmount+x*15+75,320),(10,20)))
 
-		game.screen.blit(game.text.render("Loading speed:", True, (255,255,255)), (i*Settings.width/Settings.playerAmount+50,350))
+		game.screen.blit(game.text.render("Loading speed:", True, (255,255,255)), (i*Settings.width/Settings.playerAmount+50,345))
 		for x in range(Settings.ships[self.shipNum]().loadingSpeed):
 			pygame.draw.rect(game.screen, (255,0,0), ((i*Settings.width/Settings.playerAmount+x*15+75,370),(10,20)))
 

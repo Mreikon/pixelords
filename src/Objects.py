@@ -158,8 +158,8 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 	def explode(self,map): # Explode
 		size = self.explosionSizeFactor*self.size
 
-		if Settings.sound and size > 10:
-			self.playSound(self.game.sound.explosion)
+		if size > 10:
+			Sound.playSound(self.game, 0)
 
 		if int(self.x+size) > map.width:
 			right = map.width
@@ -190,9 +190,12 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 				object.dy += 0.01*(size**2-distance)*(object.y-self.y)/math.sqrt((object.x-self.x+0.01)**2+(object.y-self.y)**2)
 
 		for i in range(self.explosionParticleFactor*int(self.size)):
-			dx = random.uniform(-2,2)
-			dy = random.uniform(-2,2)
-			self.game.objects.append(Shard(self.game, self.owner, self.x+5*dx,self.y+5*dy, dx, dy))
+			angle = random.uniform(0,2*math.pi)
+			speed = random.uniform(0.1,3.5)
+			dx = speed*math.cos(angle)
+			dy = speed*math.sin(angle)
+
+			self.game.objects.append(Shard(self.game, self.owner, self.x+5*dx,self.y+5*dy, dx+self.dx/2, dy+self.dy/2))
 
 		self.destroy(map)
 
@@ -215,18 +218,12 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 		self.x = x
 		self.y = y
 
-	def playSound(self, sound):
-		if Settings.sound:
-			try:
-				sound.play()
-			except:
-				pass
-
 class RepairKit(Object):
 	def init(self):
 		self.gravity = False
 		self.explosionCollision = False
 		self.explosionSizeFactor = 0
+		self.explosionParticleFactor = 0
 		self.size = 10
 
 		self.randomizeLocation(self.game.map)
@@ -248,6 +245,7 @@ class WeaponChanger(Object):
 	def init(self):
 		self.gravity = False
 		self.explosionSizeFactor = 0
+		self.explosionParticleFactor = 0
 		self.size = 10
 		self.heavy = random.randint(0,1)
 		if self.heavy:
@@ -523,7 +521,7 @@ class Cannonball(BombParticle):
 	def init2(self):
 		self.size = 4
 		self.explosionSizeFactor = 4
-		self.explosionParticleFactor = 2
+		self.explosionParticleFactor = 3
 
 		self.airResistance = 5
 
@@ -573,7 +571,7 @@ class Dirtball(BombParticle):
 							map.visual.set_at((x,y),(150+rand,90+rand,20+rand,255))
 							map.screenImage.set_at((x,y),(150+rand,90+rand,20+rand,255))
 
-		self.playSound(self.game.sound.dirt)
+		Sound.playSound(self.game, 5)
 
 		self.destroy(map)
 

@@ -18,8 +18,8 @@ playerAmount: 2
 lives: 5
 resetWeaponsOnDeath: true
 bonusDelay: 2000
-loadingSpeed = 100
-shipStrenght = 100
+loadingSpeed: 100
+shipStrenght: 100
 
 map: cave
 gfxTheme: default

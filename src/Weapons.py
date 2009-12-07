@@ -20,6 +20,7 @@ class Weapon: # A thing that a ship can use
 		self.shotDelay = 0
 		self.shotDelayVariation = 0
 		self.shotDelayStatus = 0
+		self.sound = None
 
 		self.recoil = 0
 
@@ -36,11 +37,7 @@ class Weapon: # A thing that a ship can use
 
 				self.fire(ship)
 
-				if Settings.sound:
-					try:
-						self.sound.play()																		
-					except:
-						pass
+				Sound.playSound(self.game, self.sound)
 
 				ship.dx -= self.recoil*math.cos(ship.angle)
 				ship.dy -= self.recoil*math.sin(ship.angle)
@@ -71,7 +68,7 @@ class Cannon(Weapon):
 		self.name = "Cannon"
 		self.loadSpeed = 0.75
 		self.recoil = 1
-		self.sound = self.game.sound.blast
+		self.sound = 3
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Cannonball, 12, 3)
@@ -81,7 +78,7 @@ class Shotgun(Weapon):
 		self.name = "Shotgun"
 		self.loadSpeed = 1.5
 		self.recoil = 0.5
-		self.sound = self.game.sound.shotgun
+		self.sound = 4
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Bullet, 10, 3, 2, 0.1, 7)
@@ -104,7 +101,7 @@ class MachineGun(Weapon):
 		self.activationCost = 3
 		self.shotDelay = 8
 		self.shotDelayVariation = 5
-		self.sound = self.game.sound.burst
+		self.sound = 2
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Bullet, 10, 10, 1.5, 0.025)
@@ -134,7 +131,7 @@ class Rifle(Weapon):
 		self.name = "Rifle"
 		self.loadSpeed = 0.5
 		self.recoil = 2
-		self.sound = self.game.sound.gunShot
+		self.sound = 1
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.RifleBullet, 10, 10)
@@ -205,7 +202,7 @@ class Mine(Weapon):
 	def init(self):
 		self.name = "Mine"
 		self.loadSpeed = 0.1
-		self.sound = self.game.sound.activation
+		self.sound = 6
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Mine, -20, 0)
