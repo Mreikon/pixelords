@@ -62,12 +62,14 @@ class Player:
 						self.lives -= 1
 
 						if self.ship == self.ship.lastHitter:
-							print "Suicide!"
+							game.messageBox.addMessage(str(self.ship.color) + " killed himself. ")
 						else:
 							try:
-								print str(self.ship.color) + " was killed by " + str(self.ship.lastHitter.color)
+								game.messageBox.addMessage(str(self.ship.color) + " was killed by " + str(self.ship.lastHitter.color) + ".")
 							except:
-								print "Suicide!"
+								game.messageBox.addMessage(str(self.ship.color) + " died. ")
+
+						self.ship.lastHitter = None
 
 						self.spawnMessage = True
 						self.shoot1 = False
