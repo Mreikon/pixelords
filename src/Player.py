@@ -102,7 +102,10 @@ class Player:
 		else:
 			left = self.ship.x-Settings.width/(2*Settings.playerAmount)
 
-		if self.ship.y-(Settings.height-20)/2 < 0 or Settings.height > Settings.playerAmount*map.height:
+		if Settings.height > map.height:
+			top = (map.height-(Settings.height-20))/2
+			self.game.screen.fill((0,0,0),((i*Settings.width/Settings.playerAmount,0),(Settings.width/Settings.playerAmount,-top)))
+		elif self.ship.y-(Settings.height-20)/2 < 0:
 			top = 0
 		elif self.ship.y > map.height-(Settings.height-20)/2:
 			top = map.height-Settings.height+20

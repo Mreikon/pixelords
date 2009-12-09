@@ -184,6 +184,8 @@ class Game:
 					player.menuCheck()
 				if menuPlayers <= 0:
 					self.inMenu = False
+					self.screen.fill((0,0,0), ((0,0),(Settings.width,Settings.height)))
+
 					self.messageBox.addMessage("Round started!")
 
 					for player in self.players:
@@ -247,9 +249,6 @@ class Map:
 		self.background = pygame.image.load(os.path.join("maps",Settings.map,"background.png")).convert()
 		self.width = self.mask.get_width()
 		self.height = self.mask.get_height()
-
-		if self.width < Settings.width or self.height < Settings.height:
-			print "Warning: Support for map smaller than screen is not yet implemented."
 
 		self.visual = self.background.convert()
 		self.visual.blit(tempvisual, (0,0))
