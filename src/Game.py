@@ -201,6 +201,8 @@ class Game:
 
 						player.check(self)
 
+					self.checkBonusSpawn()
+
 					if activePlayers < 2:
 						self.gameOver = True
 						for i,player in enumerate(self.players):
@@ -217,8 +219,6 @@ class Game:
 				self.infoOverlay.draw(self)
 
 			self.handleEvents()
-
-			self.checkBonusSpawn()
 
 			if Settings.showFPS:
 				self.screen.blit(self.text.render(str(int(self.clock.get_fps())), True, (255,0,0)), (Settings.width-40,10))

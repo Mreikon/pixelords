@@ -222,8 +222,8 @@ class RepairKit(Object):
 	def init(self):
 		self.gravity = False
 		self.explosionCollision = False
-		self.explosionSizeFactor = 0
-		self.explosionParticleFactor = 0
+		self.explosionSizeFactor = 2
+		self.explosionParticleFactor = 2
 		self.size = 10
 
 		self.randomizeLocation(self.game.map)
@@ -244,8 +244,8 @@ class RepairKit(Object):
 class WeaponChanger(Object):
 	def init(self):
 		self.gravity = False
-		self.explosionSizeFactor = 0
-		self.explosionParticleFactor = 0
+		self.explosionSizeFactor = 2
+		self.explosionParticleFactor = 2
 		self.size = 10
 		self.heavy = random.randint(0,1)
 		if self.heavy:

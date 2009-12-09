@@ -48,8 +48,6 @@ class Player:
 
 	def check(self, game):
 		if self.lives > 0:
-			self.shoot()
-
 			if not(self.ship.active):
 				if self.respawnWait <= 0:
 					self.respawnWait = 300
@@ -76,6 +74,8 @@ class Player:
 						self.spawnMessage = True
 						self.shoot1 = False
 						self.shoot2 = False
+			else:
+				self.shoot()
 		else:
 			self.active = False
 			self.spawnMessage = False
