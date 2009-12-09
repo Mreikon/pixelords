@@ -15,7 +15,8 @@ musicVolume: 0.5
 
 [Game rules]
 playerAmount: 2
-lives: 5
+lives: 3
+killLimit: 99
 resetWeaponsOnDeath: true
 bonusDelay: 2000
 loadingSpeed: 100

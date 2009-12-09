@@ -28,6 +28,7 @@ musicVolume = config.getfloat("Sound", "musicVolume")
 # Game rules:
 playerAmount = config.getint("Game rules", "playerAmount")
 lives = config.getint("Game rules", "lives")
+killLimit = config.getint("Game rules", "killLimit")
 resetWeaponsOnDeath = config.getboolean("Game rules", "resetWeaponsOnDeath")
 bonusDelay = config.getint("Game rules", "bonusDelay")
 loadingSpeed = config.getint("Game rules", "loadingSpeed")

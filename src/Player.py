@@ -61,7 +61,7 @@ class Player:
 						self.lives -= 1
 
 						if self == self.ship.lastHitter:
-							game.messageBox.addMessage(self.name + " killed himself. ")
+							game.messageBox.addMessage(self.name + " killed himself.")
 						else:
 							try:
 								self.ship.lastHitter.kills += 1
@@ -76,9 +76,10 @@ class Player:
 						self.shoot2 = False
 			else:
 				self.shoot()
-		else:
+		elif self.active:
 			self.active = False
 			self.spawnMessage = False
+			game.messageBox.addMessage(self.name + " is out!")
 
 	def shoot(self):
 		if self.shoot1: # Light weapon

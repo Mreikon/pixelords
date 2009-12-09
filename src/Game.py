@@ -195,19 +195,27 @@ class Game:
 
 				if not(self.gameOver):
 					activePlayers = Settings.playerAmount
+					killLimitReached = False
+
 					for player in self.players:
 						if not(player.active):
 							activePlayers -= 1
+						if player.kills >= Settings.killLimit:
+							killLimitReached = True
+							self.messageBox.addMessage(player.name + " reached the kill limit!")
 
 						player.check(self)
 
 					self.checkBonusSpawn()
 
-					if activePlayers < 2:
+					if activePlayers < 2 or killLimitReached:
 						self.gameOver = True
 						for i,player in enumerate(self.players):
-							if player.active:
+							if killLimitReached and player.kills < Settings.killLimit:
+								player.ship.explode(self.map)
+							elif player.active:
 								player.winner = True
+								self.messageBox.addMessage(player.name + " is the winner!")
 
 								player.ship.thrust = False
 								player.ship.rotate = 0
