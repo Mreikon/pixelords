@@ -102,18 +102,25 @@ class Player:
 		else:
 			left = self.ship.x-Settings.width/(2*Settings.playerAmount)
 
-		if self.ship.y-Settings.height/2 < 0 or Settings.height > Settings.playerAmount*map.height:
+		if self.ship.y-(Settings.height-20)/2 < 0 or Settings.height > Settings.playerAmount*map.height:
 			top = 0
-		elif self.ship.y > map.height-Settings.height/2:
-			top = map.height-Settings.height
+		elif self.ship.y > map.height-(Settings.height-20)/2:
+			top = map.height-Settings.height+20
 		else:
-			top = self.ship.y-Settings.height/2
+			top = self.ship.y-(Settings.height-20)/2
 
 		if self.ship.disruption > 0:
 			if random.randint(0,10) == 0:
-				self.game.screen.blit(map.screenImage, (int(i*Settings.width/Settings.playerAmount),0), ((int(left),int(top)), (Settings.width/Settings.playerAmount+1,Settings.height)))
+				self.game.screen.blit(map.screenImage, (int(i*Settings.width/Settings.playerAmount),0), ((int(left),int(top)), (Settings.width/Settings.playerAmount+1,Settings.height-20)))
 		else:
-			self.game.screen.blit(map.screenImage, (int(i*Settings.width/Settings.playerAmount),0), ((int(left),int(top)), (Settings.width/Settings.playerAmount+1,Settings.height)))
+			self.game.screen.blit(map.screenImage, (int(i*Settings.width/Settings.playerAmount),0), ((int(left),int(top)), (Settings.width/Settings.playerAmount+1,Settings.height-20)))
+
+		self.game.screen.fill((0,0,0),((i*Settings.width/Settings.playerAmount,Settings.height-20),(Settings.width/Settings.playerAmount+1,20)))
+
+		self.game.screen.blit(self.ship.lightWeapon.image, (i*Settings.width/Settings.playerAmount+28,Settings.height-19))
+		self.game.screen.blit(self.ship.heavyWeapon.image, (i*Settings.width/Settings.playerAmount+48,Settings.height-19))
+
+		self.game.screen.blit(self.game.text4.render(str(self.lives) + " / " + str(self.kills), True, (0,255,0)), (i*Settings.width/Settings.playerAmount+3,Settings.height-17))
 
 		if self.ship.active:
 			if self.ship.hp > self.ship.shipModel.hp/2:
@@ -122,7 +129,7 @@ class Player:
 				hpcolor = (255,255,0)
 			else:
 				hpcolor = (255,0,0)
-			pygame.draw.rect(self.game.screen, hpcolor, ((i*Settings.width/Settings.playerAmount,Settings.height-5),(int((self.ship.hp/self.ship.shipModel.hp)*Settings.width/Settings.playerAmount),5)))
+			pygame.draw.rect(self.game.screen, hpcolor, ((i*Settings.width/Settings.playerAmount+70,Settings.height-7),(int((self.ship.hp/self.ship.shipModel.hp)*(Settings.width/Settings.playerAmount-70)),7)))
 
 			for a,weapon in enumerate((self.ship.lightWeapon, self.ship.heavyWeapon)):
 				if weapon.loaded >= 100 or not(weapon.loading):
@@ -130,7 +137,7 @@ class Player:
 				else:
 					loadColor = (0,255,255)
 
-				pygame.draw.rect(self.game.screen, loadColor, ((i*Settings.width/Settings.playerAmount,Settings.height-15+a*5),(int(((weapon.loaded)/100)*Settings.width/Settings.playerAmount),4)))
+				pygame.draw.rect(self.game.screen, loadColor, ((i*Settings.width/Settings.playerAmount+70,Settings.height-19+a*6),(int(((weapon.loaded)/100)*(Settings.width/Settings.playerAmount-70)),5)))
 
 		if i > 0:
 			if Settings.playerAmount == 3 and i == 2:

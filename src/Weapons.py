@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
+import pygame
 import math
 import random
 
 import Settings
+import Functions
 import Objects
 import Sound
 
@@ -24,10 +26,15 @@ class Weapon: # A thing that a ship can use
 
 		self.recoil = 0
 
+		self.setImage("weaponbox.png") # Remove when all weapons have icons
+
 		self.init()
 
 	def init(self):
 		pass
+
+	def setImage(self, image):
+		self.image = pygame.transform.scale(pygame.image.load(Functions.gfxPath(image)).convert_alpha(), (18,18))
 
 	def activate(self, ship):
 		if (not(self.loading) or self.continuousLoad) and self.loaded >= self.activationCost and self.shotDelayStatus == 0:
@@ -88,6 +95,8 @@ class Banana(Weapon):
 		self.name = "Banana"
 		self.loadSpeed = 0.5
 		self.recoil = 0.2
+
+		self.setImage("banana.png")
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Banana, 10, 0.75, 2, 0.1, 12)
@@ -203,6 +212,8 @@ class Mine(Weapon):
 		self.name = "Mine"
 		self.loadSpeed = 0.1
 		self.sound = 6
+
+		self.setImage("mine.png")
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Mine, -20, 0)
