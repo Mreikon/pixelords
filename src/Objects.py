@@ -430,7 +430,7 @@ class Laser(Object):
 		self.explosionCollision = False
 
 	def onShipHit(self,map,ship):
-		ship.hp -= 0.5
+		ship.hp -= 0.6
 		ship.lastHitter = self.owner
 
 	def draw(self, map):
@@ -520,7 +520,7 @@ class Mine(BombParticle):
 class Cannonball(BombParticle):
 	def init2(self):
 		self.size = 4
-		self.explosionSizeFactor = 4
+		self.explosionSizeFactor = 3
 		self.explosionParticleFactor = 3
 
 		self.airResistance = 5

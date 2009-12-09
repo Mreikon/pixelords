@@ -34,7 +34,7 @@ class Weapon: # A thing that a ship can use
 		pass
 
 	def setImage(self, image):
-		self.image = pygame.transform.scale(pygame.image.load(Functions.gfxPath(image)).convert_alpha(), (18,18))
+		self.image = pygame.transform.smoothscale(pygame.image.load(Functions.gfxPath(image)).convert_alpha(), (18,18))
 
 	def activate(self, ship):
 		if (not(self.loading) or self.continuousLoad) and self.loaded >= self.activationCost and self.shotDelayStatus == 0:
@@ -77,6 +77,8 @@ class Cannon(Weapon):
 		self.recoil = 1
 		self.sound = 3
 
+		self.setImage("cannon.png")
+
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Cannonball, 12, 3)
 
@@ -118,8 +120,8 @@ class MachineGun(Weapon):
 class Flamer(Weapon):
 	def init(self):
 		self.name = "Flamer"
-		self.loadSpeed = 0.05
-		self.activationCost = 0.25
+		self.loadSpeed = 0.10
+		self.activationCost = 0.50
 		self.continuousLoad = True
 
 	def fire(self, ship):
@@ -133,7 +135,7 @@ class Laser(Weapon):
 		self.activationCost = 0.5
 
 	def fire(self, ship):
-		self.shootObject(ship, Objects.Laser, 10, 1, 1, 0, 1, 0)
+		self.shootObject(ship, Objects.Laser, 10, 1, 1, 0.05, 1, 0)
 
 class Rifle(Weapon):
 	def init(self):
