@@ -246,7 +246,7 @@ class Map:
 	def __init__(self): # Load map
 		tempvisual = pygame.image.load(os.path.join("maps",Settings.map,"visual.png")).convert_alpha()
 		self.mask = pygame.image.load(os.path.join("maps",Settings.map,"mask.png")).convert()
-		self.background = pygame.image.load(os.path.join("maps",Settings.map,"background.png")).convert()
+		self.background = pygame.image.load(os.path.join("maps",Settings.map,"background.jpg")).convert()
 		self.width = self.mask.get_width()
 		self.height = self.mask.get_height()
 
