@@ -182,6 +182,8 @@ class Dirt(Weapon):
 		self.loadSpeed = 1
 		self.recoil = 0.15
 
+		self.setImage("dirt.png")
+
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Dirtball, 14, 3)
 

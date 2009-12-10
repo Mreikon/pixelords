@@ -539,13 +539,14 @@ class Bomb(BombParticle):
 
 class Dirtball(BombParticle):
 	def init2(self):
-		self.size = 5
-		self.explosionSizeFactor = 4
+		self.size = 6
+		self.explosionSizeFactor = 3
 		self.explosionCollision = False
 
 		self.airResistance = 5
+		self.rotate = random.uniform(-3,3)
 
-		self.color = (170,110,10,255)
+		self.sprite("dirt.png")
 
 	def explode(self,map): # Make dirt
 		size = self.explosionSizeFactor*self.size
@@ -568,8 +569,8 @@ class Dirtball(BombParticle):
 							rand = random.randint(-20,20)
 
 							map.mask.set_at((x,y), (150,90,20,255))
-							map.visual.set_at((x,y),(150+rand,90+rand,20+rand,255))
-							map.screenImage.set_at((x,y),(150+rand,90+rand,20+rand,255))
+							map.visual.set_at((x,y),(145+rand,95+rand,20+rand,255))
+							map.screenImage.set_at((x,y),(145+rand,95+rand,20+rand,255))
 
 		Sound.playSound(self.game, 5)
 
