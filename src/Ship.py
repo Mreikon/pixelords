@@ -67,8 +67,6 @@ class Ship(Objects.Object): # Ship
 		self.loadingSpeed = self.shipModel.loadingSpeed
 
 	def draw(self, map):
-		map.redraw((int(self.oldx-18),int(self.oldy-18)),(36,36))
-
 		if self.thrust:
 			if random.uniform(0,1) < 0.5:
 				self.game.objects.append(Objects.ThrustFlame(self.game, self.owner, self.x-2*self.dx-12*math.cos(self.angle), self.y-2*self.dy-12*math.sin(self.angle), self.dx-1*math.cos(self.angle), self.dy-1*math.sin(self.angle)))
@@ -78,6 +76,7 @@ class Ship(Objects.Object): # Ship
 				self.game.objects.append(Objects.Smoke(self.game, self.owner, self.x, self.y))
 
 		self.spriteDraw(map)
+		self.redraw(map, self.size)
 
 	def destroy(self, map):
 		if self.active:
@@ -85,7 +84,6 @@ class Ship(Objects.Object): # Ship
 				self.lightWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)](self.game)
 				self.heavyWeapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)](self.game)
 
-			map.redraw((self.x-2*self.size-10,self.y-2*self.size-10),(2*(self.size+10),2*(self.size+10)))
 			self.active = False
 
 	def check(self, map): # Check for actions
@@ -107,7 +105,7 @@ class Ship(Objects.Object): # Ship
 		elif map.mask.get_at((x,y)) == (255,0,0,255): # Insta death area
 			self.explode(map)
 		else:
-			if self.y-self.oldy != 0:
+			if self.y-self.oldy != 0 or self.x-self.oldx != 0:
 				impact = 5*math.sqrt(self.dx**2 + self.dy**2)
 				if impact > 5:
 					self.hp -= impact

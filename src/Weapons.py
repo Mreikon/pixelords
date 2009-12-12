@@ -115,17 +115,18 @@ class MachineGun(Weapon):
 		self.sound = 2
 
 	def fire(self, ship):
-		self.shootObject(ship, Objects.Bullet, 10, 10, 1.5, 0.025)
+		self.shootObject(ship, Objects.Bullet, 10, 5, 1.5, 0.025)
 
 class Flamer(Weapon):
 	def init(self):
 		self.name = "Flamer"
-		self.loadSpeed = 0.10
-		self.activationCost = 0.50
+		self.loadSpeed = 0.20
+		self.activationCost = 1.00
 		self.continuousLoad = True
+		self.probability = 0.5
 
 	def fire(self, ship):
-		self.shootObject(ship, Objects.Flame, 12, 8, 2, 0.1)
+		self.shootObject(ship, Objects.Flame, 12, 6, 2, 0.1)
 
 class Laser(Weapon):
 	def init(self):

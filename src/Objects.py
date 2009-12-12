@@ -58,7 +58,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 			self.rect = self.image.get_rect()
 			self.rect.center = oldCenter
 
-			map.redraw((int(self.oldx-self.rect.width/2),int(self.oldy-self.rect.height/2)),(self.rect.width,self.rect.height))
+			self.redraw(map, self.rect.width/2)
 
 			self.rect.center = (self.x, self.y)
 			map.screenImage.blit(self.image, self.rect)
@@ -67,8 +67,11 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 		if self.isSprite:
 			self.spriteDraw(map)
 		else:
-			map.redraw((int(self.oldx-self.size),int(self.oldy-self.size)),(2*self.size,2*self.size))
 			pygame.draw.circle(map.screenImage, self.color, (int(self.x),int(self.y)), int(self.size))
+			self.redraw(map, self.size)
+
+	def redraw(self, map, size):
+		map.redraw((int(self.x-size-1),int(self.y-size-1)),(2*size+2,2*size+2))
 
 	def run(self, map): # Process
 		if self.active:
@@ -96,7 +99,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 		if self.isShip:
 			step = 1
 		else:
-			step = int(self.explosionSizeFactor*int(self.size)-1)
+			step = int(self.explosionSizeFactor*self.size/2-1)
 
 		xrange = []
 		if self.dx > 0:
@@ -201,8 +204,6 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 
 	def destroy(self, map): # Delete the object
 		if self.active:
-			map.redraw((self.x-3*self.size-10,self.y-3*self.size-10),(3*(self.size+10),3*(self.size+10)))
-
 			self.active = False
 
 			self.game.objects.remove(self)
@@ -375,22 +376,20 @@ class Eraser(Object):
 			self.counter -= 1
 
 	def draw(self,map):
-		map.redraw((int(self.oldx-self.size-10),int(self.oldy-self.size-10)),(2*self.size+20,2*self.size+20))
-
 		if self.lifetime > 150:
 			color = (random.randint(200,255),random.randint(0,100),0,255)
 		else:
 			color = (0,random.randint(0,100),random.randint(200,255),255)
 
 		pygame.draw.circle(map.screenImage, color, (int(self.x-2*self.owner.dx),int(self.y-2*self.owner.dy)), self.size, 2)
+		self.redraw(map, self.size+2)
 
 class Flame(Object):
 	def init(self):
 		self.airResistance = 60
-		self.lifetime = 10
+		self.lifetime = 20
 
 		self.explosionSizeFactor = 50
-
 		self.explosionCollision = False
 
 		self.red = random.randint(170,255)
@@ -401,9 +400,9 @@ class Flame(Object):
 	def check(self, map):
 		self.collision(map)
 
-		self.size += 0.5
+		self.size += 0.3
 
-		self.green -= self.green/5
+		self.green -= self.green/8
 		self.color = (self.red, int(self.green), 0)
 
 		if self.lifetime <= 0:
@@ -412,7 +411,7 @@ class Flame(Object):
 			self.lifetime -= 1
 
 	def onShipHit(self,map,ship):
-		ship.hp -= 0.75
+		ship.hp -= 1.00
 		ship.lastHitter = self.owner
 		self.destroy(map)
 
