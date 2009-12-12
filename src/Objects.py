@@ -10,10 +10,9 @@ import Functions
 import Sound
 
 class Object(pygame.sprite.Sprite): # Parent class for all objects
-	def __init__(self, game, owner, x=0,y=0, dx=0,dy=0, color=(100,100,100)): # Give default values
+	def __init__(self, game, owner, x=0,y=0, dx=0,dy=0, color=(176,176,176,255)): # Give default values
 		self.game = game
-		self.active = True
-
+		self.color = color
 		self.owner = owner
 
 		self.x = x
@@ -23,6 +22,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 		self.dx = dx
 		self.dy = dy
 		self.angle = -math.pi/2
+		self.active = True
 
 		self.color = color
 		self.isSprite = False
@@ -33,6 +33,11 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 		self.hp = 2
 		self.airResistance = 10
 		self.gravity = True
+		self.checkCollisions = True
+		self.onGroundExplode = True
+		self.onShipCollision = True
+		self.onShipDamage = 0
+		self.onShipExplode = True
 
 		self.thrust = False
 		self.rotate = 0
@@ -80,6 +85,8 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 
 			self.check(map)
 			if self.active:
+				if self.checkCollisions:
+					self.collision(map)
 				self.move()
 				self.draw(map)
 
@@ -87,13 +94,25 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 		pass
 
 	def onGroundHit(self,map,x,y):
-		pass
+		if self.onGroundExplode:
+			self.x = x
+			self.y = y
+
+			self.explode(map)
 
 	def onBorderHit(self,map,x,y):
 		self.onGroundHit(map,x,y)
 
 	def onShipHit(self,map,ship):
-		pass
+		if self.onShipCollision:
+			ship.hp -= self.onShipDamage
+
+			ship.lastHitter = self.owner
+
+			if self.onShipExplode:
+				self.onGroundHit(map,self.x,self.y)
+			else:
+				self.destroy(map)
 
 	def collision(self, map): # Detect collisions
 		if self.isShip:
@@ -231,9 +250,6 @@ class RepairKit(Object):
 
 		self.sprite("repairkit.png")
 
-	def check(self, map):
-		self.collision(map)
-
 	def onShipHit(self,map,ship):
 		if ship.hp > 3*ship.shipModel.hp/4:
 			ship.hp = ship.shipModel.hp
@@ -258,9 +274,6 @@ class WeaponChanger(Object):
 
 		self.sprite("weaponbox.png")
 
-	def check(self, map):
-		self.collision(map)
-
 	def onShipHit(self,map,ship):
 		if self.heavy:
 			ship.heavyWeapon = self.newWeapon
@@ -284,7 +297,10 @@ class ThrustFlame(Object):
 
 		self.explosionSizeFactor = 50
 
+		self.checkCollisions = False
 		self.explosionCollision = False
+		self.onGroundExplode = False
+		self.onShipCollision = False
 
 		self.red = random.randint(170,255)
 		self.green = self.red
@@ -309,6 +325,9 @@ class Smoke(Object):
 
 		self.explosionSizeFactor = 50
 
+		self.checkCollisions = False
+		self.onGroundExplode = False
+		self.onShipCollision = False
 		self.explosionCollision = False
 
 		self.lightness = random.randint(170,255)
@@ -333,7 +352,10 @@ class Eraser(Object):
 		self.size = 15
 		self.explosionSizeFactor = 0
 		self.explosionParticleFactor = 0
+		self.checkCollisions = False
 		self.explosionCollision = False
+		self.onGroundExplode = False
+		self.onShipCollision = False
 
 		self.lifetime = 500
 		self.counter = 0
@@ -382,7 +404,7 @@ class Eraser(Object):
 			color = (0,random.randint(0,100),random.randint(200,255),255)
 
 		pygame.draw.circle(map.screenImage, color, (int(self.x-2*self.owner.dx),int(self.y-2*self.owner.dy)), self.size, 2)
-		self.redraw(map, self.size+2)
+		self.redraw(map, self.size+10)
 
 class Flame(Object):
 	def init(self):
@@ -390,6 +412,11 @@ class Flame(Object):
 		self.lifetime = 20
 
 		self.explosionSizeFactor = 50
+		self.checkCollisions = True
+		self.onGroundExplode = False
+		self.onShipCollision = True
+		self.onShipDamage = 1.00
+		self.onShipExplode = False
 		self.explosionCollision = False
 
 		self.red = random.randint(170,255)
@@ -398,8 +425,6 @@ class Flame(Object):
 		self.size = random.randint(3,4)
 
 	def check(self, map):
-		self.collision(map)
-
 		self.size += 0.3
 
 		self.green -= self.green/8
@@ -409,11 +434,6 @@ class Flame(Object):
 			self.destroy(map)
 		else:
 			self.lifetime -= 1
-
-	def onShipHit(self,map,ship):
-		ship.hp -= 1.00
-		ship.lastHitter = self.owner
-		self.destroy(map)
 
 	def onGroundHit(self,map,x,y):
 		self.x = x
@@ -426,11 +446,10 @@ class Laser(Object):
 		self.explosionSizeFactor = 0
 		self.explosionParticleFactor = 0
 		self.airResistance = 0
+		self.checkCollisions = False
+		self.onShipDamage = 0.6
+		self.onShipExplode = False
 		self.explosionCollision = False
-
-	def onShipHit(self,map,ship):
-		ship.hp -= 0.6
-		ship.lastHitter = self.owner
 
 	def draw(self, map):
 		x = self.x
@@ -471,41 +490,11 @@ class Laser(Object):
 
 		self.destroy(map)
 
-class BombParticle(Object): # Class for any kinds of bombs
+class Mine(Object):
 	def init(self):
-		self.color = (176,176,176,255)
-		self.shipDamage = 0
-		self.shipExplode = True
-
-		self.init2()
-
-	def check(self, map):
-		self.collision(map)
-
-	def onGroundHit(self,map,x,y):
-		self.x = x
-		self.y = y
-
-		self.explode(map)
-
-	def onShipHit(self,map,ship):
-		ship.hp -= self.shipDamage
-
-		ship.lastHitter = self.owner
-
-		if self.shipExplode:
-			self.onGroundHit(map,self.x,self.y)
-		else:
-			self.x = ship.x
-			self.y = ship.y
-			self.destroy(map)
-
-class Mine(BombParticle):
-	def init2(self):
 		self.gravity = False
 		self.explosionSizeFactor = 2.5
 		self.explosionParticleFactor = 2
-		self.shipDamage = 0
 		self.size = 10
 
 		self.sprite("mine.png")
@@ -514,18 +503,16 @@ class Mine(BombParticle):
 		self.dx -= self.dx/20.0
 		self.dy -= self.dy/20.0
 
-		self.collision(map)
-
-class Cannonball(BombParticle):
-	def init2(self):
+class Cannonball(Object):
+	def init(self):
 		self.size = 4
 		self.explosionSizeFactor = 3
 		self.explosionParticleFactor = 3
 
 		self.airResistance = 5
 
-class Bomb(BombParticle):
-	def init2(self):
+class Bomb(Object):
+	def init(self):
 		self.size = 6
 		self.explosionSizeFactor = 3
 		self.explosionParticleFactor = 2
@@ -536,8 +523,8 @@ class Bomb(BombParticle):
 
 		self.dx += random.uniform(-0.1,0.1)
 
-class Dirtball(BombParticle):
-	def init2(self):
+class Dirtball(Object):
+	def init(self):
 		self.size = 6
 		self.explosionSizeFactor = 3
 		self.explosionCollision = False
@@ -575,8 +562,8 @@ class Dirtball(BombParticle):
 
 		self.destroy(map)
 
-class Disruptionball(BombParticle):
-	def init2(self):
+class Disruptionball(Object):
+	def init(self):
 		self.size = 8
 		self.explosionSizeFactor = 4
 		self.explosionParticleFactor = 2
@@ -592,8 +579,8 @@ class Disruptionball(BombParticle):
 	def onShipHit(self,map,ship):
 		ship.disruption = 1000
 
-class Larpa(BombParticle):
-	def init2(self):
+class Larpa(Object):
+	def init(self):
 		self.airResistance = 5
 		self.size = 8
 		self.drop = 0
@@ -611,11 +598,6 @@ class Larpa(BombParticle):
 		else:
 			self.drop += 1
 
-	def onShipHit(self,map,ship):
-		self.x = ship.x
-		self.y = ship.y
-		self.explode(map)
-
 	def onGroundHit(self,map,x,y):
 		if (self.x-self.oldx)**2+(self.y-self.oldy)**2 > 3**2:
 			self.dx = -self.dx
@@ -623,7 +605,7 @@ class Larpa(BombParticle):
 		else:
 			self.destroy(map)
 
-class Radiation(BombParticle):
+class Radiation(Object):
 	def init(self):
 		self.airResistance = 0
  		self.size = 14
@@ -631,27 +613,22 @@ class Radiation(BombParticle):
 		self.explosionParticleFactor = 0
 		self.explosionCollision = False
    		self.gravity = False
-
-	def check(self, map):
-		self.collision(map)
-
-	def onShipHit(self,map,ship):
-		ship.hp -= 3
+		self.onShipDamage = 3
 
 	def onGroundHit(self, map, x, y):
 		if self.x <= 0 or self.y <= 0 or self.x >= map.width or self.y >= map.height:
 			self.destroy(map)
 
-class Banana(BombParticle):
-	def init2(self):
+class Banana(Object):
+	def init(self):
 		self.explosionSizeFactor = 4
 		self.explosionParticleFactor = 0
-		self.shipDamage = 10
+		self.onShipDamage = 10
 
 		self.airResistance = 5
 
 		self.explosionCollision = False
-		self.shipExplode = False
+		self.onShipExplode = False
 
 		self.size = 2
 
@@ -659,38 +636,38 @@ class Banana(BombParticle):
 
 		self.sprite("banana.png")
 
-class Bullet(BombParticle):
-	def init2(self):
+class Bullet(Object):
+	def init(self):
 		self.explosionSizeFactor = 2
 		self.explosionParticleFactor = 0
 		self.airResistance = 5
 
 		self.explosionCollision = False
-		self.shipExplode = False
+		self.onShipExplode = False
 
 		self.size = 2
-		self.shipDamage = 6
+		self.onShipDamage = 6
 
-class Shard(BombParticle):
-	def init2(self):
+class Shard(Object):
+	def init(self):
 		self.explosionSizeFactor = 2
 		self.explosionParticleFactor = 0
 		self.airResistance = 20
 
 		self.explosionCollision = False
-		self.shipExplode = False
+		self.onShipExplode = False
 
 		self.size = random.randint(2,3)
-		self.shipDamage = 2*self.size
+		self.onShipDamage = 2*self.size
 
-class RifleBullet(BombParticle):
-	def init2(self):
+class RifleBullet(Object):
+	def init(self):
 		self.explosionSizeFactor = 5
 		self.explosionParticleFactor = 0
 		self.airResistance = 2
 
 		self.explosionCollision = False
-		self.shipExplode = False
+		self.onShipExplode = False
 
 		self.size = 2
-		self.shipDamage = 50
+		self.onShipDamage = 50
