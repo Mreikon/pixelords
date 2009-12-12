@@ -9,8 +9,8 @@ import Settings
 import Functions
 import Sound
 
-class Object(pygame.sprite.Sprite): # Parent class for all objects
-	def __init__(self, game, owner, x=0,y=0, dx=0,dy=0, color=(176,176,176,255)): # Give default values
+class Object(pygame.sprite.Sprite):
+	def __init__(self, game, owner, x=0,y=0, dx=0,dy=0, color=(176,176,176,255)):
 		self.game = game
 		self.color = color
 		self.owner = owner
@@ -44,7 +44,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 
 		self.init()
 
-	def sprite(self, image):
+	def sprite(self, image): # Sprite creation
 		self.isSprite = True
 
 		pygame.sprite.Sprite.__init__(self)
@@ -54,7 +54,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 		self.rect = self.image.get_rect()
 		self.rect.center = (self.x, self.y)
 
-	def spriteDraw(self, map):
+	def spriteDraw(self, map): # Sprite drawing
 		if self.angle != 0:
 			self.rect.center = (self.x, self.y)
 
@@ -68,14 +68,14 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 			self.rect.center = (self.x, self.y)
 			map.screenImage.blit(self.image, self.rect)
 
-	def draw(self, map):
+	def draw(self, map): # General drawing
 		if self.isSprite:
 			self.spriteDraw(map)
 		else:
 			pygame.draw.circle(map.screenImage, self.color, (int(self.x),int(self.y)), int(self.size))
 			self.redraw(map, self.size)
 
-	def redraw(self, map, size):
+	def redraw(self, map, size): # Redraw
 		map.redraw((int(self.x-size-1),int(self.y-size-1)),(2*size+2,2*size+2))
 
 	def run(self, map): # Process
@@ -90,20 +90,20 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 				self.move()
 				self.draw(map)
 
-	def check(self,map):
+	def check(self,map): # Custom per-frame actions
 		pass
 
-	def onGroundHit(self,map,x,y):
+	def onGroundHit(self,map,x,y): # Triggered on ground hit
 		if self.onGroundExplode:
 			self.x = x
 			self.y = y
 
 			self.explode(map)
 
-	def onBorderHit(self,map,x,y):
+	def onBorderHit(self,map,x,y): # Triggered on map border hit
 		self.onGroundHit(map,x,y)
 
-	def onShipHit(self,map,ship):
+	def onShipHit(self,map,ship):  # Triggered on ship hip
 		if self.onShipCollision:
 			ship.hp -= self.onShipDamage
 
@@ -227,7 +227,7 @@ class Object(pygame.sprite.Sprite): # Parent class for all objects
 
 			self.game.objects.remove(self)
 
-	def randomizeLocation(self, map):
+	def randomizeLocation(self, map): # Move to a random location with no ground
 		while True:
 			x = random.randint(1,map.width-1)
 			y = random.randint(1,map.height-1)

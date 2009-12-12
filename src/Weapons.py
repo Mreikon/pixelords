@@ -9,7 +9,7 @@ import Functions
 import Objects
 import Sound
 
-class Weapon: # A thing that a ship can use
+class Weapon:
 	def __init__(self, game):
 		self.game = game
 
@@ -26,17 +26,17 @@ class Weapon: # A thing that a ship can use
 
 		self.recoil = 0
 
-		self.setImage("weaponbox.png") # Remove when all weapons have icons
+		self.setImage("weaponbox.png") # Use general icon when there is no weapon specific one
 
 		self.init()
 
-	def init(self):
+	def init(self): # Weapon specific attributes and other initializations
 		pass
 
-	def setImage(self, image):
+	def setImage(self, image): # Set weapon icon
 		self.image = pygame.transform.smoothscale(pygame.image.load(Functions.gfxPath(image)).convert_alpha(), (18,18))
 
-	def activate(self, ship):
+	def activate(self, ship): # Use the weapon
 		if (not(self.loading) or self.continuousLoad) and self.loaded >= self.activationCost and self.shotDelayStatus == 0:
 			if self.probability == 1 or random.uniform(0,1) < self.probability:
 				self.loaded -= self.activationCost
@@ -54,16 +54,16 @@ class Weapon: # A thing that a ship can use
 			if not(self.continuousLoad) and self.loaded >= 100:
 				self.loading = False
 
-	def fire(self, ship):
+	def fire(self, ship): # Weapon specific shoot function
 		pass
 
-	def shootObject(self, ship, object, offset, speed, speedDeviationFactor=1, spread=0, amount=1, shipSpeedEffect=1):
+	def shootObject(self, ship, object, offset, speed, speedDeviationFactor=1, spread=0, amount=1, shipSpeedEffect=1): # Spawn a new object
 		for i in range(amount):
 			angle = ship.angle + random.uniform(-spread,spread)
 			ship.game.objects.append(object(ship.game, ship.owner, ship.x+ship.dx+offset*math.cos(angle), ship.y+ship.dy+offset*math.sin(angle),
 				shipSpeedEffect*ship.dx+random.uniform(1,speedDeviationFactor)*speed*math.cos(angle), shipSpeedEffect*ship.dy+random.uniform(1,speedDeviationFactor)*speed*math.sin(angle)))
 
-	def check(self, ship):
+	def check(self, ship): # Per-frame checks
 		if self.loading and self.loaded < 100:
 			self.loaded += self.loadSpeed*(Settings.loadingSpeed/100.0)*(ship.loadingSpeed/100.0)
 

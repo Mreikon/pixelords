@@ -45,7 +45,7 @@ class Game:
 
 		self.run()
 
-	def initScreen(self):
+	def initScreen(self): # Create screen
 		pygame.display.init()
 
 		pygame.mouse.set_visible(False)
@@ -78,7 +78,7 @@ class Game:
 		else:
 			self.screen = pygame.display.set_mode((Settings.width, Settings.height), screenFlagsCombined)
 
-	def scale(self):
+	def scale(self): # Scale the screen
 		if Settings.scaleType == 1:
 			pygame.transform.smoothscale(self.screen, (Settings.scale*Settings.width, Settings.scale*Settings.height), self.scaled)
 		elif Settings.scaleType == 2:
@@ -156,7 +156,7 @@ class Game:
 						if player.ship.active:
 							player.event(event)
 
-	def checkBonusSpawn(self):
+	def checkBonusSpawn(self): # Check spawn timer for repair kits and weapon changers
 		if Settings.bonusDelay > 0:
 			if self.bonusTimer <= 0:
 				self.bonusTimer = Settings.bonusDelay
@@ -191,8 +191,7 @@ class Game:
 					for player in self.players:
 						player.createShip()
 			else:
-				# Process objects
-				for object in self.objects:
+				for object in self.objects: # Process objects
 					object.run(self.map)
 
 				if not(self.gameOver):
@@ -221,8 +220,8 @@ class Game:
 
 								player.ship.thrust = False
 								player.ship.rotate = 0
-				# Draw screens for each player
-				for i,player2 in enumerate(self.players):
+
+				for i,player2 in enumerate(self.players): # Draw screens for each player
 					player2.drawHUD(self.map, i)
 
 				self.messageBox.draw(self)
@@ -243,7 +242,7 @@ class Game:
 			self.clock.tick(100)
 
 class Map:
-	def __init__(self): # Load map
+	def __init__(self): # Load the map
 		tempvisual = pygame.image.load(os.path.join("maps",Settings.map,"visual.png")).convert_alpha()
 		self.mask = pygame.image.load(os.path.join("maps",Settings.map,"mask.png")).convert()
 		self.background = pygame.image.load(os.path.join("maps",Settings.map,"background.jpg")).convert()

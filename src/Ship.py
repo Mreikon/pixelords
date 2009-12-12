@@ -9,7 +9,7 @@ import os
 import Settings
 import Objects
 
-class Ship(Objects.Object): # Ship
+class Ship(Objects.Object):
 	def init(self):
 		self.size = 7
 		self.explosionSizeFactor = 1.5
@@ -30,7 +30,7 @@ class Ship(Objects.Object): # Ship
 		self.lightWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)](self.game)
 		self.heavyWeapon = Settings.heavyWeapons[random.randint(0,len(Settings.heavyWeapons)-1)](self.game)
 
-	def setShipType(self, shipType):
+	def setShipType(self, shipType): # Load the specific ship
 		self.shipModel = shipType()
 
 		self.shipModel.hp = (13*self.shipModel.strength+60)*(Settings.shipStrenght/100.0)
@@ -48,7 +48,7 @@ class Ship(Objects.Object): # Ship
 
 				self.baseImage.set_at((x,y), (newcolor[0]*255, newcolor[1]*255, newcolor[2]*255, self.baseImage.get_at((x,y))[3]))
 
-	def spawn(self):
+	def spawn(self): # Respawn the ship
 		self.randomizeLocation(self.game.map)
 
 		self.dx = 0
@@ -66,7 +66,7 @@ class Ship(Objects.Object): # Ship
 		self.acceleration = self.shipModel.acceleration
 		self.loadingSpeed = self.shipModel.loadingSpeed
 
-	def draw(self, map):
+	def draw(self, map): # Drawing
 		if self.thrust:
 			if random.uniform(0,1) < 0.5:
 				self.game.objects.append(Objects.ThrustFlame(self.game, self.owner, self.x-2*self.dx-12*math.cos(self.angle), self.y-2*self.dy-12*math.sin(self.angle), self.dx-1*math.cos(self.angle), self.dy-1*math.sin(self.angle)))
@@ -78,7 +78,7 @@ class Ship(Objects.Object): # Ship
 		self.spriteDraw(map)
 		self.redraw(map, self.size)
 
-	def destroy(self, map):
+	def destroy(self, map): # Destroy the ship
 		if self.active:
 			if Settings.resetWeaponsOnDeath:
 				self.lightWeapon = Settings.lightWeapons[random.randint(0,len(Settings.lightWeapons)-1)](self.game)
@@ -112,6 +112,6 @@ class Ship(Objects.Object): # Ship
 			self.dx = 0
 			self.dy = 0
 
-	def onBorderHit(self,map,x,y):
+	def onBorderHit(self,map,x,y): # Stop the ship when colliding with map border
 		self.dx = 0
 		self.dy = 0

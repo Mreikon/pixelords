@@ -12,10 +12,10 @@ class Menu:
 
 		self.init()
 
-	def draw(self, game, i):
+	def draw(self, game, i): # Draw the menu
 		pass
 
-	def event(self, event, keys):
+	def event(self, event, keys): # Take keyboard events
 		pass
 
 class shipChooser(Menu):

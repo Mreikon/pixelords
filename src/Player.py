@@ -29,7 +29,7 @@ class Player:
 		self.menuStage = 1
 		self.menu = Menus.shipChooser()
 
-	def menuCheck(self):
+	def menuCheck(self): # Check menu actions
 		if self.menuStage == 1:
 			if self.menu.done:
 				self.menuStage = 0
@@ -39,14 +39,14 @@ class Player:
 	def menuDraw(self, i):
 		self.menu.draw(self.game, self.keys, i)
 
-	def createShip(self):
+	def createShip(self): # Create a ship
 		self.spawnMessage = True
 		self.ship = Ship.Ship(self.game, self, 0,0,0,0, self.color)
 		self.ship.setShipType(self.shipType)
 		self.ship.active = False
 		self.game.objects.append(self.ship)
 
-	def check(self, game):
+	def check(self, game): # Check events
 		if self.lives > 0:
 			if not(self.ship.active):
 				if self.respawnWait <= 0:
@@ -88,7 +88,7 @@ class Player:
 		if self.shoot2: # Heavy weapon
 			self.ship.heavyWeapon.activate(self.ship)
 
-	def drawHUD(self, map, i):
+	def drawHUD(self, map, i): # Draw the HUD
 		if Settings.playerAmount == 3:
 			if i == 0:
 				i = 1
@@ -123,7 +123,7 @@ class Player:
 		self.game.screen.blit(self.ship.lightWeapon.image, (i*Settings.width/Settings.playerAmount+28,Settings.height-19))
 		self.game.screen.blit(self.ship.heavyWeapon.image, (i*Settings.width/Settings.playerAmount+48,Settings.height-19))
 
-		self.game.screen.blit(self.game.text4.render(str(self.lives) + " / " + str(self.kills), True, (0,255,0)), (i*Settings.width/Settings.playerAmount+3,Settings.height-17))
+		self.game.screen.blit(self.game.text4.render(str(self.kills) + " / " + str(self.lives), True, (0,255,0)), (i*Settings.width/Settings.playerAmount+3,Settings.height-17))
 
 		if self.ship.active:
 			if self.ship.hp > self.ship.shipModel.hp/2:

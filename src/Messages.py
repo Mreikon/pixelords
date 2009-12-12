@@ -6,7 +6,7 @@ class MessageBox:
 		self.showForce = False
 		self.messages = []
 
-	def addMessage(self, message):
+	def addMessage(self, message): # Add a new message to the box
 		if len(self.messages) > 4:
 			self.messages.pop(0)
 
@@ -15,7 +15,7 @@ class MessageBox:
 
 		print ":: " + message
 
-	def draw(self, game):
+	def draw(self, game): # Show the messages
 		if self.show > 0 or self.showForce:
 			self.show -= 1
 			for i,message in enumerate(self.messages):
