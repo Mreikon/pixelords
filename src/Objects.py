@@ -144,7 +144,7 @@ class Object(pygame.sprite.Sprite):
 					if x >= map.width or x < 0 or y >=  map.height or y < 0:
 						groundHit = True
 						self.onBorderHit(map,x,y)
-					elif map.mask.get_at((x,y)) != (0, 0, 0, 255):
+					elif map.mask[x][y] != map.maskimage.map_rgb((0, 0, 0, 255)):
 						groundHit = True
 						self.onGroundHit(map,x,y)
 
@@ -197,11 +197,11 @@ class Object(pygame.sprite.Sprite):
 			if (x-self.x)/(size+0.01) >= -1:
 				for y in range(int((-math.sin(math.acos((x-self.x)/(size+0.01)))*size)+self.y), int((math.sin(math.acos((x-self.x)/(size+0.01)))*size)+self.y)):
 					if y < map.height and y >= 0:
-						maskValue = map.mask.get_at((x,y))
-						if maskValue != (127, 127, 127, 255) and maskValue != (255, 0, 0, 255) and maskValue != (0, 0, 0, 255):
-							map.mask.set_at((x,y), (0, 0, 0))
-							map.visual.set_at((x,y),map.background.get_at((x,y)))
-							map.screenImage.set_at((x,y), map.background.get_at((x,y)))
+						maskValue = map.mask[x][y]
+						if maskValue != map.maskimage.map_rgb((127, 127, 127, 255)) and maskValue != map.maskimage.map_rgb((255, 0, 0, 255)) and maskValue != map.maskimage.map_rgb((0, 0, 0, 255)):
+							map.mask[x][y] = (0, 0, 0)
+							map.visual.set_at((x,y),map.background[x][y])
+							map.screenImage.set_at((x,y), map.background[x][y])
 
 		for object in self.game.objects:
 			distance = (object.x-self.x)**2+(object.y-self.y)**2
@@ -232,7 +232,7 @@ class Object(pygame.sprite.Sprite):
 			x = random.randint(1,map.width-1)
 			y = random.randint(1,map.height-1)
 
-			if map.mask.get_at((x,y)) == (0,0,0, 255):
+			if map.mask[x][y] == map.maskimage.map_rgb((0,0,0, 255)):
 				break
 
 		self.x = x
@@ -350,6 +350,7 @@ class Smoke(Object):
 class Eraser(Object):
 	def init(self):
 		self.size = 15
+		self.gravity = False
 		self.explosionSizeFactor = 0
 		self.explosionParticleFactor = 0
 		self.checkCollisions = False
@@ -368,8 +369,8 @@ class Eraser(Object):
 		else:
 			self.lifetime -= 1
 
-		self.x = self.owner.x+self.owner.dx
-		self.y = self.owner.y+self.owner.dy
+		self.x = self.owner.x
+		self.y = self.owner.y
 
 		if self.counter <= 0:
 			self.counter = 2
@@ -389,11 +390,11 @@ class Eraser(Object):
 			for x in range(left, right):
 				if (x-self.x)/(size+0.01) >= -1:
 					for y in range(int((-math.sin(math.acos((x-self.x)/(size+0.01)))*size)+self.y), int((math.sin(math.acos((x-self.x)/(size+0.01)))*size)+self.y)):
-						if y < map.height and y > 0:
-							maskValue = map.mask.get_at((x,y))
-							if maskValue != (127, 127, 127, 255) and maskValue != (255, 0, 0, 255) and maskValue != (0, 0, 0, 255):
-								map.mask.set_at((x,y), (0, 0, 0))
-								map.visual.set_at((x,y),map.background.get_at((x,y)))
+						if y < map.height and y >= 0:
+							maskValue = map.mask[x][y]
+							if maskValue != map.maskimage.map_rgb((127, 127, 127, 255)) and maskValue != map.maskimage.map_rgb((255, 0, 0, 255)) and maskValue != map.maskimage.map_rgb((0, 0, 0, 255)):
+								map.mask[x][y] = (0, 0, 0)
+								map.visual.set_at((x,y),map.background[x][y])
 		else:
 			self.counter -= 1
 
@@ -403,7 +404,7 @@ class Eraser(Object):
 		else:
 			color = (0,random.randint(0,100),random.randint(200,255),255)
 
-		pygame.draw.circle(map.screenImage, color, (int(self.x-2*self.owner.dx),int(self.y-2*self.owner.dy)), self.size, 2)
+		pygame.draw.circle(map.screenImage, color, (int(self.x),int(self.y)), self.size, 2)
 		self.redraw(map, self.size+10)
 
 class Flame(Object):
@@ -468,7 +469,7 @@ class Laser(Object):
 						Hit = True
 						self.onShipHit(map,player.ship)
 
-			if x >= map.width-1 or x < 0 or y >= map.height-1 or y < 0 or map.mask.get_at((int(x),int(y))) != (0, 0, 0, 255):
+			if x >= map.width-1 or x < 0 or y >= map.height-1 or y < 0 or map.mask[int(x)][int(y)] != map.maskimage.map_rgb((0, 0, 0, 255)):
 				Hit = True
 
 		pygame.draw.aaline(map.screenImage, (255,0,0,255), (self.x,self.y), (x,y))
@@ -551,10 +552,10 @@ class Dirtball(Object):
 			if (x-self.x)/(size+0.01) >= -1:
 				for y in range(int((-math.sin(math.acos((x-self.x)/(size+0.01)))*size)+self.y), int((math.sin(math.acos((x-self.x)/(size+0.01)))*size)+self.y)):
 					if y < map.height and y > 0:
-						if map.mask.get_at((x,y)) == (0,0,0,255):
+						if map.mask[x][y] == map.maskimage.map_rgb((0,0,0,255)):
 							rand = random.randint(-20,20)
 
-							map.mask.set_at((x,y), (150,90,20,255))
+							map.mask[x][y] = (150,90,20,255)
 							map.visual.set_at((x,y),(145+rand,95+rand,20+rand,255))
 							map.screenImage.set_at((x,y),(145+rand,95+rand,20+rand,255))
 

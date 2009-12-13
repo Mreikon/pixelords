@@ -87,8 +87,6 @@ class Ship(Objects.Object):
 			self.active = False
 
 	def check(self, map): # Check for actions
-		self.collision(map)
-
 		if self.hp < self.shipModel.hp/6:
 			self.hp -= self.shipModel.hp/10000.0
 
@@ -99,10 +97,10 @@ class Ship(Objects.Object):
 		self.heavyWeapon.check(self)
 
 	def onGroundHit(self,map,x,y):
-		if map.mask.get_at((x,y)) == (150,90,20,255): # Dirt
+		if map.mask[x][y] == map.maskimage.map_rgb((150,90,20,255)): # Dirt
 			self.dx -= self.dx/5
 			self.dy -= self.dy/5 + 0.008
-		elif map.mask.get_at((x,y)) == (255,0,0,255): # Insta death area
+		elif map.mask[x][y] == map.maskimage.map_rgb((255,0,0,255)): # Insta death area
 			self.explode(map)
 		else:
 			if self.y-self.oldy != 0 or self.x-self.oldx != 0:

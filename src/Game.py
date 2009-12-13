@@ -143,7 +143,7 @@ class Game:
 						os.mkdir(path)
 					except:
 						pass
-					pygame.image.save(self.map.mask, os.path.join(path, "mask.png"))
+					pygame.image.save(self.map.mask.make_surface(), os.path.join(path, "mask.png"))
 					pygame.image.save(self.map.visual, os.path.join(path, "visual.png"))
 					pygame.image.save(self.map.background, os.path.join(path, "background.png"))
 					self.messageBox.addMessage("Current map saved to " + path + ".")
@@ -244,12 +244,14 @@ class Game:
 class Map:
 	def __init__(self): # Load the map
 		tempvisual = pygame.image.load(os.path.join("maps",Settings.map,"visual.png")).convert_alpha()
-		self.mask = pygame.image.load(os.path.join("maps",Settings.map,"mask.png")).convert()
-		self.background = pygame.image.load(os.path.join("maps",Settings.map,"background.jpg")).convert()
-		self.width = self.mask.get_width()
-		self.height = self.mask.get_height()
+		self.maskimage = pygame.image.load(os.path.join("maps",Settings.map,"mask.png")).convert()
+		self.mask = pygame.PixelArray(self.maskimage)
+		self.backgroundimage = pygame.image.load(os.path.join("maps",Settings.map,"background.jpg")).convert()
+		self.background = pygame.PixelArray(self.backgroundimage)
+		self.width = self.maskimage.get_width()
+		self.height = self.maskimage.get_height()
 
-		self.visual = self.background.convert()
+		self.visual = self.backgroundimage.convert()
 		self.visual.blit(tempvisual, (0,0))
 
 		self.screenImage = self.visual.convert()
