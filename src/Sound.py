@@ -35,6 +35,7 @@ class Sound:
 		self.effects.append(pygame.mixer.Sound(os.path.join("sfx","dirt.ogg")))
 		self.effects.append(pygame.mixer.Sound(os.path.join("sfx","activation.ogg")))
 		self.effects.append(pygame.mixer.Sound(os.path.join("sfx","insta.ogg")))
+		self.effects.append(pygame.mixer.Sound(os.path.join("sfx","laser.ogg")))
 
 	def loadMusic(self):
 		musicFiles = Functions.getSpecificFiles("music", "ogg")
@@ -54,9 +55,8 @@ class Sound:
 		else:
 			print "Warning: No music available."
 
-def playSound(game, number):
-	if Settings.sound:
-		try:
-			game.sound.effects[number].play()																		
-		except:
-			pass
+def playSound(game, number, single=False):
+	if Settings.sound and number != None:
+		if single:
+			game.sound.effects[number].stop()
+		game.sound.effects[number].play()

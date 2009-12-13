@@ -23,6 +23,7 @@ class Weapon:
 		self.shotDelayVariation = 0
 		self.shotDelayStatus = 0
 		self.sound = None
+		self.soundSingle = False
 
 		self.recoil = 0
 
@@ -44,7 +45,7 @@ class Weapon:
 
 				self.fire(ship)
 
-				Sound.playSound(self.game, self.sound)
+				Sound.playSound(self.game, self.sound, self.soundSingle)
 
 				ship.dx -= self.recoil*math.cos(ship.angle)
 				ship.dy -= self.recoil*math.sin(ship.angle)
@@ -134,6 +135,8 @@ class Laser(Weapon):
 		self.loadSpeed = 0.25
 		self.loading = False
 		self.activationCost = 0.5
+		self.sound = 8
+		self.soundSingle = True
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Laser, 10, 1, 1, 0.05, 1, 0)
