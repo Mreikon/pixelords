@@ -27,11 +27,11 @@ class Game:
 		self.text3 = pygame.font.Font(os.path.join("resources","LiberationSans-Bold.ttf"), 32)
 		self.text4 = pygame.font.Font(os.path.join("resources","LiberationSans-Bold.ttf"), 12)
 
-		if Settings.sound:
-			self.sound = Sound.Sound()
-
 		self.messageBox = Messages.MessageBox()
 		self.infoOverlay = Messages.InfoOverlay()
+
+		if Settings.sound:
+			self.sound = Sound.Sound(self)
 
 		self.map = Map()
 

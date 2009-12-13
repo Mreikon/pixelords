@@ -3,12 +3,20 @@
 import pygame
 import os
 import random
+try:
+	import mutagen.oggvorbis
+	mutagenEnabled = True
+except:
+	print "Warning: No Mutagen available, \"Now Playing\" messages won't be nice."
+	mutagenEnabled = False
 
 import Settings
 import Functions
 
 class Sound:
-	def __init__(self):
+	def __init__(self, game):
+		self.game = game
+
 		pygame.mixer.init(44100, -16, 2, 512)
 
 		pygame.mixer.music.set_volume(Settings.musicVolume)
@@ -28,13 +36,18 @@ class Sound:
 		self.effects.append(pygame.mixer.Sound(os.path.join("sfx","activation.ogg")))
 
 	def loadMusic(self):
-		if len(Functions.getSpecificFiles("music", "ogg")) > 0:
+		musicFiles = Functions.getSpecificFiles("music", "ogg")
+		if len(musicFiles) > 0:
 			if len(self.musicList) == 0:
-				self.musicList = Functions.getSpecificFiles("music", "ogg")
+				self.musicList = musicFiles
 				random.shuffle(self.musicList)
 
 			self.music = self.musicList.pop()
-			pygame.mixer.music.load(os.path.join("music",self.music))
+			pygame.mixer.music.load(self.music)
+			if mutagenEnabled:
+				self.game.messageBox.addMessage("Now playing: " + mutagen.oggvorbis.OggVorbis(self.music)["artist"][0] + " - " + mutagen.oggvorbis.OggVorbis(self.music)["title"][0])
+			else:
+				self.game.messageBox.addMessage("Now playing: " + self.music)
 
 			pygame.mixer.music.play()
 		else:

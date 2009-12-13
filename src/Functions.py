@@ -21,10 +21,11 @@ def saveNameIncrement(path, name, extension): # Get path so that it doesn't over
 	return os.path.join(path,name+str(number)+"."+extension)
 
 def getSpecificFiles(path, extension): # Get list of files with the requested type
-	files = []
+	fileList = []
 
-	for file in os.listdir(path):
-		if file.endswith(extension):
-			files.append(file)
+	for root, subFolders, files in os.walk(path):
+		for file in files:
+			if file.endswith(extension):
+				fileList.append(os.path.join(root,file))
 
-	return files
+	return fileList
