@@ -94,7 +94,7 @@ class Game:
 		for event in pygame.event.get():
 			# General events:
 			if event.type == pygame.constants.USEREVENT:
-				self.loadMusic()
+				self.sound.loadMusic()
 
 			# Global keys:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_F12:

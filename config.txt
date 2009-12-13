@@ -11,7 +11,7 @@ showFPS: false
 [Sound]
 enabled: true
 music: true
-musicVolume: 0.5
+musicVolume: 0.8
 
 [Game rules]
 playerAmount: 2
