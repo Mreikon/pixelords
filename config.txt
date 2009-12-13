@@ -18,6 +18,7 @@ playerAmount: 2
 lives: 5
 killLimit: 99
 resetWeaponsOnDeath: true
+insta: false
 bonusDelay: 2000
 loadingSpeed: 100
 shipStrenght: 100

@@ -207,7 +207,8 @@ class Game:
 
 						player.check(self)
 
-					self.checkBonusSpawn()
+					if not(Settings.insta):
+						self.checkBonusSpawn()
 
 					if activePlayers < 2 or killLimitReached:
 						self.gameOver = True

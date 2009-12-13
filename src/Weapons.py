@@ -242,3 +242,12 @@ class Radiation(Weapon):
 
      def fire(self, ship):
           self.shootObject(ship, Objects.Radiation, 20, 2)
+
+class InstaGun(Weapon):
+	def init(self):
+		self.name = "InstaGun"
+		self.loadSpeed = 0.5
+		self.sound = 1
+
+	def fire(self, ship):
+		self.shootObject(ship, Objects.InstaRail, 10, 1, 1, 0, 1, 0)

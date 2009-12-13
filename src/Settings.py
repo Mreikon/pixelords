@@ -30,6 +30,7 @@ playerAmount = config.getint("Game rules", "playerAmount")
 lives = config.getint("Game rules", "lives")
 killLimit = config.getint("Game rules", "killLimit")
 resetWeaponsOnDeath = config.getboolean("Game rules", "resetWeaponsOnDeath")
+insta = config.getboolean("Game rules", "insta")
 bonusDelay = config.getint("Game rules", "bonusDelay")
 loadingSpeed = config.getint("Game rules", "loadingSpeed")
 shipStrenght = config.getint("Game rules", "shipStrenght")
@@ -45,6 +46,10 @@ extraHeavyWeapons = [Weapons.Disruptor, Weapons.Larpa]
 
 lightWeapons = coreLightWeapons #+extraLightWeapons
 heavyWeapons = coreHeavyWeapons #+extraHeavyWeapons
+
+if insta:
+	lightWeapons = [Weapons.InstaGun]
+	heavyWeapons = [Weapons.Reverse]
 
 ships = [ShipTypes.Fighter, ShipTypes.Basher, ShipTypes.Destroyer, ShipTypes.MegaGlider, ShipTypes.Interceptor, ShipTypes.Penetrator, ShipTypes.Dragon, ShipTypes.Incectar]
 

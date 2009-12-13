@@ -491,6 +491,73 @@ class Laser(Object):
 
 		self.destroy(map)
 
+class InstaRail(Object):
+	def init(self):
+		self.size = 0
+		self.explosionSizeFactor = 0
+		self.explosionParticleFactor = 0
+		self.airResistance = 0
+		self.checkCollisions = False
+		self.onShipDamage = 500
+		self.onShipExplode = True
+		self.onGroundExplode = False
+		self.explosionCollision = False
+		self.gravity = False
+
+		self.color = self.owner.color
+		self.lifetime = 100
+
+		self.targetx = self.dx
+		self.targety = self.dy
+
+		self.dx = 0
+		self.dy = 0
+
+	def draw(self, map):
+		if self.lifetime == 100:
+			x = self.x
+			y = self.y
+
+			Hit = False
+			while not(Hit):
+				x += 5*self.targetx
+				y += 5*self.targety
+
+				for player in self.game.players:
+					object = player.ship
+					if not(Hit) and object.active:
+						distance = (player.ship.x-x)**2 + (player.ship.y-y)**2
+						if distance < (player.ship.size + 2)**2:
+							Hit = True
+							self.onShipHit(map,player.ship)
+
+				if x >= map.width-1 or x < 0 or y >= map.height-1 or y < 0 or map.mask[int(x)][int(y)] != map.maskimage.map_rgb((0, 0, 0, 255)):
+					Hit = True
+
+			self.targetx = x
+			self.targety = y
+		elif self.lifetime == 0:
+			self.destroy(map)
+
+		self.lifetime -= 1
+
+		pygame.draw.line(map.screenImage, self.color, (self.x,self.y), (self.targetx,self.targety), 4*self.lifetime/100.0)
+
+		if self.x > self.targetx:
+			x1 = self.targetx-3
+			x2 = self.x+3
+		else:
+			x1 = self.x-3
+			x2 = self.targetx+3
+
+		if self.y > self.targety:
+			y1 = self.targety-3
+			y2 = self.y+3
+		else:
+			y1 = self.y-3
+			y2 = self.targety+3
+		map.redraw((x1,y1),(x2-x1,y2-y1))
+
 class Mine(Object):
 	def init(self):
 		self.gravity = False
