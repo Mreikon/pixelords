@@ -118,7 +118,7 @@ class Game:
 					Settings.fullscreen = 1
 				self.initScreen()
 
-			# Meny keys:
+			# Menu keys:
 			if self.inMenu:
 				if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
 					self.running = False
@@ -145,7 +145,7 @@ class Game:
 						pass
 					pygame.image.save(self.map.mask.make_surface(), os.path.join(path, "mask.png"))
 					pygame.image.save(self.map.visual, os.path.join(path, "visual.png"))
-					pygame.image.save(self.map.background, os.path.join(path, "background.png"))
+					pygame.image.save(self.map.background.make_surface(), os.path.join(path, "background.png"))
 					self.messageBox.addMessage("Current map saved to " + path + ".")
 				elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
 					path = Functions.saveNameIncrement("screenshots", "fullmap", "png")
