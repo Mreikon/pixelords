@@ -34,6 +34,7 @@ class Sound:
 		self.effects.append(pygame.mixer.Sound(os.path.join("sfx","shotgun.ogg")))
 		self.effects.append(pygame.mixer.Sound(os.path.join("sfx","dirt.ogg")))
 		self.effects.append(pygame.mixer.Sound(os.path.join("sfx","activation.ogg")))
+		self.effects.append(pygame.mixer.Sound(os.path.join("sfx","insta.ogg")))
 
 	def loadMusic(self):
 		musicFiles = Functions.getSpecificFiles("music", "ogg")

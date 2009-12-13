@@ -15,6 +15,8 @@ Sound:
         - burst.ogg
      - dobroide, http://www.freesound.org/usersViewSingle.php?id=8043
         - gunshot.ogg
+     - junggle, http://www.freesound.org/usersViewSingle.php?id=128404
+        - insta.ogg
      - man, http://www.freesound.org/usersViewSingle.php?id=14447
         - blast.ogg
      - PhreaKsAccount, http://www.freesound.org/usersViewSingle.php?id=89025

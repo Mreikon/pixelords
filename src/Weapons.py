@@ -161,6 +161,7 @@ class Backshot(Weapon):
 		self.name = "Backshot"
 		self.loadSpeed = 0.5
 		self.recoil = -3
+		self.sound = 3
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Shard, -10, -3, 2, 0.2, 7)
@@ -208,6 +209,7 @@ class Halo(Weapon):
 	def init(self):
 		self.name = "Halo"
 		self.loadSpeed = 0.75
+		self.sound = 4
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Shard, 11, 6, 1, math.pi, 25)
@@ -247,7 +249,7 @@ class InstaGun(Weapon):
 	def init(self):
 		self.name = "InstaGun"
 		self.loadSpeed = 0.5
-		self.sound = 1
+		self.sound = 7
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.InstaRail, 10, 1, 1, 0, 1, 0)
