@@ -238,6 +238,22 @@ class Object(pygame.sprite.Sprite):
 		self.x = x
 		self.y = y
 
+	def redrawLine(self, map, x,y, targetx,targety):
+		if x > targetx:
+			x1 = targetx-3
+			x2 = x+3
+		else:
+			x1 = x-3
+			x2 = targetx+3
+
+		if y > targety:
+			y1 = targety-3
+			y2 = y+3
+		else:
+			y1 = y-3
+			y2 = targety+3
+		map.redraw((x1,y1),(x2-x1,y2-y1))
+
 class RepairKit(Object):
 	def init(self):
 		self.gravity = False
@@ -473,21 +489,7 @@ class Laser(Object):
 				Hit = True
 
 		pygame.draw.aaline(map.screenImage, (255,0,0,255), (self.x,self.y), (x,y))
-
-		if self.x > x:
-			x1 = x-3
-			x2 = self.x+3
-		else:
-			x1 = self.x-3
-			x2 = x+3
-
-		if self.y > y:
-			y1 = y-3
-			y2 = self.y+3
-		else:
-			y1 = self.y-3
-			y2 = y+3
-		map.redraw((x1,y1),(x2-x1,y2-y1))
+		self.redrawLine(map,self.x,self.y,x,y)
 
 		self.destroy(map)
 
@@ -541,22 +543,9 @@ class InstaRail(Object):
 
 		self.lifetime -= 1
 
-		pygame.draw.line(map.screenImage, self.color, (self.x,self.y), (self.targetx,self.targety), 4*self.lifetime/100.0)
-
-		if self.x > self.targetx:
-			x1 = self.targetx-3
-			x2 = self.x+3
-		else:
-			x1 = self.x-3
-			x2 = self.targetx+3
-
-		if self.y > self.targety:
-			y1 = self.targety-3
-			y2 = self.y+3
-		else:
-			y1 = self.y-3
-			y2 = self.targety+3
-		map.redraw((x1,y1),(x2-x1,y2-y1))
+		pygame.draw.line(map.screenImage, self.color, (self.x,self.y), (self.targetx,self.targety), int(4*self.lifetime/100.0))
+		pygame.draw.line(map.screenImage, (255-(255-self.color[0])/1.75,255-(255-self.color[1])/1.75,255-(255-self.color[2])/1.75,255), (self.x,self.y), (self.targetx,self.targety), int(2*self.lifetime/100.0))
+		self.redrawLine(map,self.x,self.y,self.targetx,self.targety)
 
 class Mine(Object):
 	def init(self):
