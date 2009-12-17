@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-print "Initiating..."
+print "Loading..."
 
 from src import Game
 

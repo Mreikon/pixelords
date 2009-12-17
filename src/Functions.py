@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import math
 import os
 
 import Settings
@@ -14,7 +15,7 @@ def gfxPath(file): # Get path for GFX
 
 def saveNameIncrement(path, name, extension): # Get path so that it doesn't overwrite old files
 	number = 1
-	
+
 	while os.path.exists(os.path.join(path,name+str(number)+"."+extension)):
 		number += 1
 
@@ -29,3 +30,11 @@ def getSpecificFiles(path, extension): # Get list of files with the requested ty
 				fileList.append(os.path.join(root,file))
 
 	return fileList
+
+def returnAngle(angle):
+	while angle > 2*math.pi:
+		angle -= 2*math.pi
+	while angle < 0:
+		angle += 2*math.pi
+
+	return angle

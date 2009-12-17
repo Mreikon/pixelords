@@ -83,6 +83,18 @@ class Cannon(Weapon):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Cannonball, 12, 3)
 
+class Missile(Weapon):
+	def init(self):
+		self.name = "Missile"
+		self.loadSpeed = 20
+		self.recoil = 1
+		self.sound = 3
+
+		self.setImage("missile.png")
+
+	def fire(self, ship):
+		self.shootObject(ship, Objects.Missile, 12, 1)
+
 class Shotgun(Weapon):
 	def init(self):
 		self.name = "Shotgun"

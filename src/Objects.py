@@ -83,6 +83,8 @@ class Object(pygame.sprite.Sprite):
 			if self.hp <= 0:
 				self.explode(map)
 
+			self.angle = Functions.returnAngle(self.angle)
+
 			self.check(map)
 			if self.active:
 				if self.checkCollisions:
@@ -175,7 +177,7 @@ class Object(pygame.sprite.Sprite):
 			self.dy += self.acceleration*math.sin(self.angle)
 
 		if self.rotate != 0: # Rotation
-			self.angle += self.rotate*0.04
+			self.angle += self.rotate*0.04+random.uniform(-0.005, 0.005)
 
 	def explode(self,map): # Explode
 		size = self.explosionSizeFactor*self.size
@@ -253,6 +255,18 @@ class Object(pygame.sprite.Sprite):
 			y1 = y-3
 			y2 = targety+3
 		map.redraw((x1,y1),(x2-x1,y2-y1))
+
+	def getClosestShip(self, maxRange):
+		minDistance = -1
+		closestShip = None
+		for player in self.game.players:
+			object = player.ship
+			if object.active and object != self.owner.ship:
+				distance = (object.x-self.x)**2 + (object.y-self.y)**2
+				if distance < maxRange**2 and (distance < minDistance or minDistance == -1):
+					minDistance = distance
+					closestShip = object
+		return closestShip
 
 class RepairKit(Object):
 	def init(self):
@@ -567,6 +581,56 @@ class Cannonball(Object):
 		self.explosionParticleFactor = 3
 
 		self.airResistance = 5
+
+class Missile(Object):
+	def init(self):
+		self.size = 4
+		self.explosionSizeFactor = 3
+		self.explosionParticleFactor = 3
+		self.airResistance = 10
+		self.angle = self.owner.ship.angle
+
+		self.activationTime = 30
+		self.target = None
+
+		self.acceleration = 0.05
+
+		self.sprite("missile.png")
+
+	def check(self, map):
+		if self.activationTime > 0:
+			self.activationTime -= 1
+		else:
+			target = self.getClosestShip(300)
+			if target != None:
+				if self.target == None:
+					self.target = target
+					Sound.playSound(self.game, 6)
+				elif target == self.target:
+					if target.x > self.x and target.y > self.y:
+						targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x)))
+					elif target.x < self.x and target.y > self.y:
+						targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x)) + math.pi)
+					elif target.x < self.x and target.y < self.y:
+						targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x))) + math.pi
+					elif target.x > self.x and target.y < self.y:
+						targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x)) + math.pi) + math.pi
+					else:
+						targetAngle = math.pi/2
+
+					if Functions.returnAngle(self.angle) < targetAngle or Functions.returnAngle(self.angle) > targetAngle + math.pi:
+						self.angle += 0.05
+					else:
+						self.angle -= 0.05
+
+					if math.fabs(Functions.returnAngle(self.angle) - targetAngle) < math.pi/8:
+						self.thrust = True
+						if random.uniform(0,1) < 0.3:
+							self.game.objects.append(ThrustFlame(self.game, self.owner, self.x-2*self.dx-5*math.cos(self.angle), self.y-2*self.dy-5*math.sin(self.angle), self.dx-1*math.cos(self.angle), self.dy-1*math.sin(self.angle)))
+			else:
+				self.thrust = False
+				self.activationTime = 10
+				self.target = None
 
 class Bomb(Object):
 	def init(self):
