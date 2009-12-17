@@ -591,6 +591,7 @@ class Missile(Object):
 		self.angle = self.owner.ship.angle
 
 		self.activationTime = 30
+		self.fuel = 500
 		self.target = None
 
 		self.acceleration = 0.05
@@ -601,36 +602,49 @@ class Missile(Object):
 		if self.activationTime > 0:
 			self.activationTime -= 1
 		else:
-			target = self.getClosestShip(300)
-			if target != None:
-				if self.target == None:
-					self.target = target
-					Sound.playSound(self.game, 6)
-				elif target == self.target:
-					if target.x > self.x and target.y > self.y:
-						targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x)))
-					elif target.x < self.x and target.y > self.y:
-						targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x)) + math.pi)
-					elif target.x < self.x and target.y < self.y:
-						targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x))) + math.pi
-					elif target.x > self.x and target.y < self.y:
-						targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x)) + math.pi) + math.pi
-					else:
-						targetAngle = math.pi/2
-
-					if Functions.returnAngle(self.angle) < targetAngle or Functions.returnAngle(self.angle) > targetAngle + math.pi:
-						self.angle += 0.05
-					else:
-						self.angle -= 0.05
-
-					if math.fabs(Functions.returnAngle(self.angle) - targetAngle) < math.pi/8:
-						self.thrust = True
-						if random.uniform(0,1) < 0.3:
-							self.game.objects.append(ThrustFlame(self.game, self.owner, self.x-2*self.dx-5*math.cos(self.angle), self.y-2*self.dy-5*math.sin(self.angle), self.dx-1*math.cos(self.angle), self.dy-1*math.sin(self.angle)))
-			else:
+			if self.fuel < 1:
 				self.thrust = False
-				self.activationTime = 10
-				self.target = None
+				if random.uniform(0,1) < 0.1:
+					self.game.objects.append(Smoke(self.game, self.owner, self.x, self.y))
+			else:
+				target = self.getClosestShip(300)
+				if target != None:
+					if self.target == None:
+						self.target = target
+						Sound.playSound(self.game, 6)
+					elif target == self.target:
+						if target.x > self.x and target.y > self.y:
+							targetAngle = math.atan((self.y-target.y)/(self.x-target.x))
+						elif target.x < self.x and target.y > self.y:
+							targetAngle = math.atan((self.y-target.y)/(self.x-target.x)) + math.pi
+						elif target.x < self.x and target.y < self.y:
+							targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x))) + math.pi
+						elif target.x > self.x and target.y < self.y:
+							targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x)) + math.pi) + math.pi
+						else:
+							targetAngle = math.pi/2
+
+						if target.y > self.y:
+							if Functions.returnAngle(self.angle) < Functions.returnAngle(targetAngle) or Functions.returnAngle(self.angle) > Functions.returnAngle(targetAngle + math.pi):
+								self.angle += 0.05
+							else:
+								self.angle -= 0.05
+						elif target.y < self.y:
+							if Functions.returnAngle(self.angle) < Functions.returnAngle(targetAngle + math.pi) or Functions.returnAngle(self.angle) > Functions.returnAngle(targetAngle):
+								self.angle -= 0.05
+							else:
+								self.angle += 0.05
+
+						if math.fabs(Functions.returnAngle(self.angle) - targetAngle) < math.pi/8:
+							self.fuel -= 1
+							self.thrust = True
+							if random.uniform(0,1) < 0.3:
+								self.game.objects.append(ThrustFlame(self.game, self.owner, self.x-2*self.dx-5*math.cos(self.angle), self.y-2*self.dy-5*math.sin(self.angle), self.dx-1*math.cos(self.angle), self.dy-1*math.sin(self.angle)))
+						
+				else:
+					self.thrust = False
+					self.activationTime = 10
+					self.target = None
 
 class Bomb(Object):
 	def init(self):

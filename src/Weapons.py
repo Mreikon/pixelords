@@ -86,7 +86,7 @@ class Cannon(Weapon):
 class Missile(Weapon):
 	def init(self):
 		self.name = "Missile"
-		self.loadSpeed = 20
+		self.loadSpeed = 0.5
 		self.recoil = 1
 		self.sound = 3
 
