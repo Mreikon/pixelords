@@ -83,6 +83,8 @@ class Object(pygame.sprite.Sprite):
 			if self.hp <= 0:
 				self.explode(map)
 
+			self.angle = Functions.returnAngle(self.angle)
+
 			self.check(map)
 			if self.active:
 				if self.checkCollisions:
@@ -175,7 +177,7 @@ class Object(pygame.sprite.Sprite):
 			self.dy += self.acceleration*math.sin(self.angle)
 
 		if self.rotate != 0: # Rotation
-			self.angle += self.rotate*0.04
+			self.angle += self.rotate*0.04+random.uniform(-0.005, 0.005)
 
 	def explode(self,map): # Explode
 		size = self.explosionSizeFactor*self.size
@@ -237,6 +239,34 @@ class Object(pygame.sprite.Sprite):
 
 		self.x = x
 		self.y = y
+
+	def redrawLine(self, map, x,y, targetx,targety):
+		if x > targetx:
+			x1 = targetx-3
+			x2 = x+3
+		else:
+			x1 = x-3
+			x2 = targetx+3
+
+		if y > targety:
+			y1 = targety-3
+			y2 = y+3
+		else:
+			y1 = y-3
+			y2 = targety+3
+		map.redraw((x1,y1),(x2-x1,y2-y1))
+
+	def getClosestShip(self, maxRange):
+		minDistance = -1
+		closestShip = None
+		for player in self.game.players:
+			object = player.ship
+			if object.active and object != self.owner.ship:
+				distance = (object.x-self.x)**2 + (object.y-self.y)**2
+				if distance < maxRange**2 and (distance < minDistance or minDistance == -1):
+					minDistance = distance
+					closestShip = object
+		return closestShip
 
 class RepairKit(Object):
 	def init(self):
@@ -473,21 +503,7 @@ class Laser(Object):
 				Hit = True
 
 		pygame.draw.aaline(map.screenImage, (255,0,0,255), (self.x,self.y), (x,y))
-
-		if self.x > x:
-			x1 = x-3
-			x2 = self.x+3
-		else:
-			x1 = self.x-3
-			x2 = x+3
-
-		if self.y > y:
-			y1 = y-3
-			y2 = self.y+3
-		else:
-			y1 = self.y-3
-			y2 = y+3
-		map.redraw((x1,y1),(x2-x1,y2-y1))
+		self.redrawLine(map,self.x,self.y,x,y)
 
 		self.destroy(map)
 
@@ -541,22 +557,9 @@ class InstaRail(Object):
 
 		self.lifetime -= 1
 
-		pygame.draw.line(map.screenImage, self.color, (self.x,self.y), (self.targetx,self.targety), 4*self.lifetime/100.0)
-
-		if self.x > self.targetx:
-			x1 = self.targetx-3
-			x2 = self.x+3
-		else:
-			x1 = self.x-3
-			x2 = self.targetx+3
-
-		if self.y > self.targety:
-			y1 = self.targety-3
-			y2 = self.y+3
-		else:
-			y1 = self.y-3
-			y2 = self.targety+3
-		map.redraw((x1,y1),(x2-x1,y2-y1))
+		pygame.draw.line(map.screenImage, self.color, (self.x,self.y), (self.targetx,self.targety), int(4*self.lifetime/100.0))
+		pygame.draw.line(map.screenImage, (255-(255-self.color[0])/1.75,255-(255-self.color[1])/1.75,255-(255-self.color[2])/1.75,255), (self.x,self.y), (self.targetx,self.targety), int(2*self.lifetime/100.0))
+		self.redrawLine(map,self.x,self.y,self.targetx,self.targety)
 
 class Mine(Object):
 	def init(self):
@@ -578,6 +581,70 @@ class Cannonball(Object):
 		self.explosionParticleFactor = 3
 
 		self.airResistance = 5
+
+class Missile(Object):
+	def init(self):
+		self.size = 4
+		self.explosionSizeFactor = 3
+		self.explosionParticleFactor = 3
+		self.airResistance = 10
+		self.angle = self.owner.ship.angle
+
+		self.activationTime = 30
+		self.fuel = 500
+		self.target = None
+
+		self.acceleration = 0.05
+
+		self.sprite("missile.png")
+
+	def check(self, map):
+		if self.activationTime > 0:
+			self.activationTime -= 1
+		else:
+			if self.fuel < 1:
+				self.thrust = False
+				if random.uniform(0,1) < 0.1:
+					self.game.objects.append(Smoke(self.game, self.owner, self.x, self.y))
+			else:
+				target = self.getClosestShip(300)
+				if target != None:
+					if self.target == None:
+						self.target = target
+						Sound.playSound(self.game, 6)
+					elif target == self.target:
+						if target.x > self.x and target.y > self.y:
+							targetAngle = math.atan((self.y-target.y)/(self.x-target.x))
+						elif target.x < self.x and target.y > self.y:
+							targetAngle = math.atan((self.y-target.y)/(self.x-target.x)) + math.pi
+						elif target.x < self.x and target.y < self.y:
+							targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x))) + math.pi
+						elif target.x > self.x and target.y < self.y:
+							targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x)) + math.pi) + math.pi
+						else:
+							targetAngle = math.pi/2
+
+						if target.y > self.y:
+							if Functions.returnAngle(self.angle) < Functions.returnAngle(targetAngle) or Functions.returnAngle(self.angle) > Functions.returnAngle(targetAngle + math.pi):
+								self.angle += 0.05
+							else:
+								self.angle -= 0.05
+						elif target.y < self.y:
+							if Functions.returnAngle(self.angle) < Functions.returnAngle(targetAngle + math.pi) or Functions.returnAngle(self.angle) > Functions.returnAngle(targetAngle):
+								self.angle -= 0.05
+							else:
+								self.angle += 0.05
+
+						if math.fabs(Functions.returnAngle(self.angle) - targetAngle) < math.pi/8:
+							self.fuel -= 1
+							self.thrust = True
+							if random.uniform(0,1) < 0.3:
+								self.game.objects.append(ThrustFlame(self.game, self.owner, self.x-2*self.dx-5*math.cos(self.angle), self.y-2*self.dy-5*math.sin(self.angle), self.dx-1*math.cos(self.angle), self.dy-1*math.sin(self.angle)))
+						
+				else:
+					self.thrust = False
+					self.activationTime = 10
+					self.target = None
 
 class Bomb(Object):
 	def init(self):

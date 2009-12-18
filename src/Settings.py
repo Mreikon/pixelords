@@ -38,7 +38,7 @@ shipStrenght = config.getint("Game rules", "shipStrenght")
 map = config.get("Game rules", "map")
 gfxTheme = config.get("Game rules", "gfxTheme")
 
-coreLightWeapons = [Weapons.Cannon, Weapons.Shotgun, Weapons.Flamer, Weapons.Laser, Weapons.MachineGun, Weapons.Rifle, Weapons.Banana]
+coreLightWeapons = [Weapons.Cannon, Weapons.Shotgun, Weapons.Flamer, Weapons.Laser, Weapons.MachineGun, Weapons.Rifle, Weapons.Banana, Weapons.Missile]
 extraLightWeapons = [Weapons.Radiation]
 
 coreHeavyWeapons = [Weapons.Bomber, Weapons.Backshot, Weapons.Reverse, Weapons.Dirt, Weapons.Halo, Weapons.Eraser, Weapons.Mine]
