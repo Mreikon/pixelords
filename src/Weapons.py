@@ -114,6 +114,7 @@ class MachineGun(Weapon):
 		self.shotDelay = 8
 		self.shotDelayVariation = 5
 		self.sound = 2
+		self.setImage("machinegun_icon.png")
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Bullet, 10, 5, 1.5, 0.025)
