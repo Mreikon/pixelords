@@ -585,8 +585,8 @@ class Cannonball(Object):
 class Missile(Object):
 	def init(self):
 		self.size = 4
-		self.explosionSizeFactor = 2.5
-		self.explosionParticleFactor = 2
+		self.explosionSizeFactor = 3
+		self.explosionParticleFactor = 1
 		self.airResistance = 10
 		self.angle = self.owner.ship.angle
 
@@ -613,23 +613,28 @@ class Missile(Object):
 						self.target = target
 						Sound.playSound(self.game, 6)
 					elif target == self.target:
-						if target.x > self.x+2*self.dx and target.y > self.y+2*self.dy:
-							targetAngle = math.atan((self.y+2*self.dy-target.y)/(self.x+2*self.dx-target.x))
-						elif target.x < self.x+2*self.dx and target.y > self.y+2*self.dy:
-							targetAngle = math.atan((self.y+2*self.dy-target.y)/(self.x+2*self.dx-target.x)) + math.pi
-						elif target.x < self.x+2*self.dx and target.y < self.y+2*self.dy:
-							targetAngle = Functions.returnAngle(math.atan((self.y+2*self.dy-target.y)/(self.x+2*self.dx-target.x))) + math.pi
-						elif target.x > self.x+2*self.dx and target.y < self.y+2*self.dy:
-							targetAngle = Functions.returnAngle(math.atan((self.y+2*self.dy-target.y)/(self.x+2*self.dx-target.x)) + math.pi) + math.pi
+						predictedTargetX = target.x - 5*self.dx
+						predictedTargetY = target.y - 5*self.dy
+						predictedSelfX = self.x + 5*self.dx
+						predictedSelfY = self.y + 5*self.dy + 5
+
+						if predictedTargetX > predictedSelfX and predictedTargetY > predictedSelfY:
+							targetAngle = math.atan((predictedSelfY-predictedTargetY)/(self.x+2*self.dx-predictedTargetX))
+						elif predictedTargetX < predictedSelfX and predictedTargetY > predictedSelfY:
+							targetAngle = math.atan((predictedSelfY-predictedTargetY)/(self.x+2*self.dx-predictedTargetX)) + math.pi
+						elif predictedTargetX < predictedSelfX and predictedTargetY < predictedSelfY:
+							targetAngle = Functions.returnAngle(math.atan((predictedSelfY-predictedTargetY)/(self.x+2*self.dx-predictedTargetX))) + math.pi
+						elif predictedTargetX > predictedSelfX and predictedTargetY < predictedSelfY:
+							targetAngle = Functions.returnAngle(math.atan((predictedSelfY-predictedTargetY)/(self.x+2*self.dx-predictedTargetX)) + math.pi) + math.pi
 						else:
 							targetAngle = math.pi/2
 
-						if target.y > self.y+2*self.dy:
+						if predictedTargetY > predictedSelfY:
 							if Functions.returnAngle(self.angle) < Functions.returnAngle(targetAngle) or Functions.returnAngle(self.angle) > Functions.returnAngle(targetAngle + math.pi):
 								self.angle += 0.075
 							else:
 								self.angle -= 0.075
-						elif target.y < self.y+2*self.dy:
+						elif predictedTargetY < predictedSelfY:
 							if Functions.returnAngle(self.angle) < Functions.returnAngle(targetAngle + math.pi) or Functions.returnAngle(self.angle) > Functions.returnAngle(targetAngle):
 								self.angle -= 0.075
 							else:
