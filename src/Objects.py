@@ -585,8 +585,8 @@ class Cannonball(Object):
 class Missile(Object):
 	def init(self):
 		self.size = 4
-		self.explosionSizeFactor = 3
-		self.explosionParticleFactor = 3
+		self.explosionSizeFactor = 2.5
+		self.explosionParticleFactor = 2
 		self.airResistance = 10
 		self.angle = self.owner.ship.angle
 
@@ -613,27 +613,27 @@ class Missile(Object):
 						self.target = target
 						Sound.playSound(self.game, 6)
 					elif target == self.target:
-						if target.x > self.x and target.y > self.y:
-							targetAngle = math.atan((self.y-target.y)/(self.x-target.x))
-						elif target.x < self.x and target.y > self.y:
-							targetAngle = math.atan((self.y-target.y)/(self.x-target.x)) + math.pi
-						elif target.x < self.x and target.y < self.y:
-							targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x))) + math.pi
-						elif target.x > self.x and target.y < self.y:
-							targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x)) + math.pi) + math.pi
+						if target.x > self.x+2*self.dx and target.y > self.y+2*self.dy:
+							targetAngle = math.atan((self.y+2*self.dy-target.y)/(self.x+2*self.dx-target.x))
+						elif target.x < self.x+2*self.dx and target.y > self.y+2*self.dy:
+							targetAngle = math.atan((self.y+2*self.dy-target.y)/(self.x+2*self.dx-target.x)) + math.pi
+						elif target.x < self.x+2*self.dx and target.y < self.y+2*self.dy:
+							targetAngle = Functions.returnAngle(math.atan((self.y+2*self.dy-target.y)/(self.x+2*self.dx-target.x))) + math.pi
+						elif target.x > self.x+2*self.dx and target.y < self.y+2*self.dy:
+							targetAngle = Functions.returnAngle(math.atan((self.y+2*self.dy-target.y)/(self.x+2*self.dx-target.x)) + math.pi) + math.pi
 						else:
 							targetAngle = math.pi/2
 
-						if target.y > self.y:
+						if target.y > self.y+2*self.dy:
 							if Functions.returnAngle(self.angle) < Functions.returnAngle(targetAngle) or Functions.returnAngle(self.angle) > Functions.returnAngle(targetAngle + math.pi):
-								self.angle += 0.05
+								self.angle += 0.075
 							else:
-								self.angle -= 0.05
-						elif target.y < self.y:
+								self.angle -= 0.075
+						elif target.y < self.y+2*self.dy:
 							if Functions.returnAngle(self.angle) < Functions.returnAngle(targetAngle + math.pi) or Functions.returnAngle(self.angle) > Functions.returnAngle(targetAngle):
-								self.angle -= 0.05
+								self.angle -= 0.075
 							else:
-								self.angle += 0.05
+								self.angle += 0.075
 
 						if math.fabs(Functions.returnAngle(self.angle) - targetAngle) < math.pi/8:
 							self.fuel -= 1

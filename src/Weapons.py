@@ -83,11 +83,15 @@ class Cannon(Weapon):
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Cannonball, 12, 3)
 
-class Missile(Weapon):
+class Missiles(Weapon):
 	def init(self):
-		self.name = "Missile"
-		self.loadSpeed = 0.5
-		self.recoil = 1
+		self.name = "Missiles"
+		self.loadSpeed = 0.3
+		self.loading = False
+		self.activationCost = 50
+		self.shotDelay = 20
+		self.shotDelayVariation = 2
+		self.recoil = 0.2
 		self.sound = 3
 
 		self.setImage("missile.png")
