@@ -209,6 +209,8 @@ class Object(pygame.sprite.Sprite):
 			distance = (object.x-self.x)**2+(object.y-self.y)**2
 			if object != self and object.explosionCollision and distance < size**2:
 				object.hp -= math.sqrt((1.5*size)**2-distance)
+				if object.isShip:
+					object.lastHitter = self.owner
 
 				object.dx += 0.01*(size**2-distance)*(object.x-self.x)/math.sqrt((object.x-self.x+0.01)**2+(object.y-self.y)**2)
 				object.dy += 0.01*(size**2-distance)*(object.y-self.y)/math.sqrt((object.x-self.x+0.01)**2+(object.y-self.y)**2)
@@ -399,8 +401,8 @@ class Eraser(Object):
 		else:
 			self.lifetime -= 1
 
-		self.x = self.owner.x
-		self.y = self.owner.y
+		self.x = self.owner.x+self.owner.dx
+		self.y = self.owner.y+self.owner.dy
 
 		if self.counter <= 0:
 			self.counter = 2
@@ -728,11 +730,9 @@ class Larpa(Object):
 		self.explosionParticleFactor = 0
 
 	def check(self, map):
-		self.collision(map)
-
-		if self.drop == 2:
+		if self.drop == 4:
 			self.drop = 0
-			self.game.objects.append(Shard(self.game,self.x+random.uniform(-self.size,self.size),self.y+random.uniform(-self.size,self.size), 0, 0))
+			self.game.objects.append(Shard(self.game,self.owner,self.x+random.uniform(-self.size,self.size),self.y+random.uniform(-self.size,self.size), 0, 0))
 			if self.size > 5:
 				self.size -= 0.1
 		else:
