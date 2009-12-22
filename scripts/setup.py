@@ -26,9 +26,9 @@ dll_excludes = []            # excluded dlls ["w9xpopen.exe", "msvcr71.dll"]
 
 # Stuff to show who made it, etc.
 copyright = "GNU GENERAL PUBLIC LICENSE"
-author = "ape3000.com"
+author = "Lauri Niskanen"
 company = ""
-version = "0.0.0"
+version = "0.1.0"
 
 
 # Below if you edit variables, you could mess up the program
