@@ -50,7 +50,7 @@ class shipChooser(Menu):
 
 		game.screen.blit(game.text2.render(Settings.ships[self.shipNum]().name, True, (0,255,0)), (i*Settings.width/Settings.playerAmount+25,190))
 
-		game.screen.blit(game.text.render("Strenght:", True, (255,255,255)), (i*Settings.width/Settings.playerAmount+50,245))
+		game.screen.blit(game.text.render("Strength:", True, (255,255,255)), (i*Settings.width/Settings.playerAmount+50,245))
 		for x in range(Settings.ships[self.shipNum]().strength):
 			pygame.draw.rect(game.screen, (255,0,0), ((i*Settings.width/Settings.playerAmount+x*15+75,270),(10,20)))
 

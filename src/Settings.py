@@ -33,7 +33,7 @@ resetWeaponsOnDeath = config.getboolean("Game rules", "resetWeaponsOnDeath")
 insta = config.getboolean("Game rules", "insta")
 bonusDelay = config.getint("Game rules", "bonusDelay")
 loadingSpeed = config.getint("Game rules", "loadingSpeed")
-shipStrenght = config.getint("Game rules", "shipStrenght")
+shipStrength = config.getint("Game rules", "shipStrength")
 
 map = config.get("Game rules", "map")
 gfxTheme = config.get("Game rules", "gfxTheme")

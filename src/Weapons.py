@@ -190,7 +190,7 @@ class Reverse(Weapon):
 	def init(self):
 		self.name = "Reverse"
 		self.loadSpeed = 0.2
-		self.activationCost = 0.5
+		self.activationCost = 0.75
 		self.continuousLoad = True
 		self.recoil = 0.04
 
