@@ -23,5 +23,5 @@ bonusDelay: 2000
 loadingSpeed: 100
 shipStrength: 100
 
-map: sky
+map: cave
 gfxTheme: default
