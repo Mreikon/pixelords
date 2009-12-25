@@ -21,7 +21,7 @@ resetWeaponsOnDeath: true
 insta: false
 bonusDelay: 2000
 loadingSpeed: 100
-shipStrenght: 100
+shipStrength: 100
 
 map: cave
 gfxTheme: default

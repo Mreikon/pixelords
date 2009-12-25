@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=War of Pixelords
-Version=0.01
+Version=0.1.0
 Comment=Multiplayer shooter game made with Python
 Exec=/usr/bin/pixelords
 Icon=/usr/share/games/pixelords/gfx/default/ship2.png

@@ -33,7 +33,7 @@ class Ship(Objects.Object):
 	def setShipType(self, shipType): # Load the specific ship
 		self.shipModel = shipType()
 
-		self.shipModel.hp = (13*self.shipModel.strength+60)*(Settings.shipStrenght/100.0)
+		self.shipModel.hp = (13*self.shipModel.strength+60)*(Settings.shipStrength/100.0)
 		self.shipModel.acceleration = 0.0045*self.shipModel.acceleration+0.022
 		self.shipModel.loadingSpeed = 15*self.shipModel.loadingSpeed+40
 

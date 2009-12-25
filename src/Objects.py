@@ -209,6 +209,8 @@ class Object(pygame.sprite.Sprite):
 			distance = (object.x-self.x)**2+(object.y-self.y)**2
 			if object != self and object.explosionCollision and distance < size**2:
 				object.hp -= math.sqrt((1.5*size)**2-distance)
+				if object.isShip:
+					object.lastHitter = self.owner
 
 				object.dx += 0.01*(size**2-distance)*(object.x-self.x)/math.sqrt((object.x-self.x+0.01)**2+(object.y-self.y)**2)
 				object.dy += 0.01*(size**2-distance)*(object.y-self.y)/math.sqrt((object.x-self.x+0.01)**2+(object.y-self.y)**2)
@@ -399,8 +401,8 @@ class Eraser(Object):
 		else:
 			self.lifetime -= 1
 
-		self.x = self.owner.x
-		self.y = self.owner.y
+		self.x = self.owner.x+self.owner.dx
+		self.y = self.owner.y+self.owner.dy
 
 		if self.counter <= 0:
 			self.counter = 2
@@ -586,7 +588,7 @@ class Missile(Object):
 	def init(self):
 		self.size = 4
 		self.explosionSizeFactor = 3
-		self.explosionParticleFactor = 3
+		self.explosionParticleFactor = 1
 		self.airResistance = 10
 		self.angle = self.owner.ship.angle
 
@@ -613,27 +615,32 @@ class Missile(Object):
 						self.target = target
 						Sound.playSound(self.game, 6)
 					elif target == self.target:
-						if target.x > self.x and target.y > self.y:
-							targetAngle = math.atan((self.y-target.y)/(self.x-target.x))
-						elif target.x < self.x and target.y > self.y:
-							targetAngle = math.atan((self.y-target.y)/(self.x-target.x)) + math.pi
-						elif target.x < self.x and target.y < self.y:
-							targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x))) + math.pi
-						elif target.x > self.x and target.y < self.y:
-							targetAngle = Functions.returnAngle(math.atan((self.y-target.y)/(self.x-target.x)) + math.pi) + math.pi
+						predictedTargetX = target.x - 5*self.dx
+						predictedTargetY = target.y - 5*self.dy
+						predictedSelfX = self.x + 5*self.dx
+						predictedSelfY = self.y + 5*self.dy + 5
+
+						if predictedTargetX > predictedSelfX and predictedTargetY > predictedSelfY:
+							targetAngle = math.atan((predictedSelfY-predictedTargetY)/(self.x+2*self.dx-predictedTargetX))
+						elif predictedTargetX < predictedSelfX and predictedTargetY > predictedSelfY:
+							targetAngle = math.atan((predictedSelfY-predictedTargetY)/(self.x+2*self.dx-predictedTargetX)) + math.pi
+						elif predictedTargetX < predictedSelfX and predictedTargetY < predictedSelfY:
+							targetAngle = Functions.returnAngle(math.atan((predictedSelfY-predictedTargetY)/(self.x+2*self.dx-predictedTargetX))) + math.pi
+						elif predictedTargetX > predictedSelfX and predictedTargetY < predictedSelfY:
+							targetAngle = Functions.returnAngle(math.atan((predictedSelfY-predictedTargetY)/(self.x+2*self.dx-predictedTargetX)) + math.pi) + math.pi
 						else:
 							targetAngle = math.pi/2
 
-						if target.y > self.y:
+						if predictedTargetY > predictedSelfY:
 							if Functions.returnAngle(self.angle) < Functions.returnAngle(targetAngle) or Functions.returnAngle(self.angle) > Functions.returnAngle(targetAngle + math.pi):
-								self.angle += 0.05
+								self.angle += 0.075
 							else:
-								self.angle -= 0.05
-						elif target.y < self.y:
+								self.angle -= 0.075
+						elif predictedTargetY < predictedSelfY:
 							if Functions.returnAngle(self.angle) < Functions.returnAngle(targetAngle + math.pi) or Functions.returnAngle(self.angle) > Functions.returnAngle(targetAngle):
-								self.angle -= 0.05
+								self.angle -= 0.075
 							else:
-								self.angle += 0.05
+								self.angle += 0.075
 
 						if math.fabs(Functions.returnAngle(self.angle) - targetAngle) < math.pi/8:
 							self.fuel -= 1
@@ -723,11 +730,9 @@ class Larpa(Object):
 		self.explosionParticleFactor = 0
 
 	def check(self, map):
-		self.collision(map)
-
-		if self.drop == 2:
+		if self.drop == 4:
 			self.drop = 0
-			self.game.objects.append(Shard(self.game,self.x+random.uniform(-self.size,self.size),self.y+random.uniform(-self.size,self.size), 0, 0))
+			self.game.objects.append(Shard(self.game,self.owner,self.x+random.uniform(-self.size,self.size),self.y+random.uniform(-self.size,self.size), 0, 0))
 			if self.size > 5:
 				self.size -= 0.1
 		else:
