@@ -647,7 +647,7 @@ class Missile(Object):
 							self.thrust = True
 							if random.uniform(0,1) < 0.3:
 								self.game.objects.append(ThrustFlame(self.game, self.owner, self.x-2*self.dx-5*math.cos(self.angle), self.y-2*self.dy-5*math.sin(self.angle), self.dx-1*math.cos(self.angle), self.dy-1*math.sin(self.angle)))
-						
+
 				else:
 					self.thrust = False
 					self.activationTime = 10
@@ -658,6 +658,7 @@ class Bomb(Object):
 		self.size = 6
 		self.explosionSizeFactor = 3
 		self.explosionParticleFactor = 2
+		self.sprite("bomb.png")
 
 		self.airResistance = 10
 

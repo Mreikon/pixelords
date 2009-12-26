@@ -106,6 +106,8 @@ class Shotgun(Weapon):
 		self.recoil = 0.5
 		self.sound = 4
 
+		self.setImage("shotgun_icon.png")
+
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Bullet, 10, 3, 2, 0.1, 7)
 
@@ -143,6 +145,8 @@ class Flamer(Weapon):
 		self.continuousLoad = True
 		self.probability = 0.5
 
+		self.setImage("flamer_icon.png")
+
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Flame, 12, 6, 2, 0.1)
 
@@ -155,6 +159,8 @@ class Laser(Weapon):
 		self.sound = 8
 		self.soundSingle = True
 
+		self.setImage("laser_icon.png")
+
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Laser, 10, 1, 1, 0.05, 1, 0)
 
@@ -165,6 +171,8 @@ class Rifle(Weapon):
 		self.recoil = 2
 		self.sound = 1
 
+		self.setImage("rifle_icon.png")
+
 	def fire(self, ship):
 		self.shootObject(ship, Objects.RifleBullet, 10, 10)
 
@@ -172,6 +180,8 @@ class Bomber(Weapon):
 	def init(self):
 		self.name = "Bomber"
 		self.loadSpeed = 0.5
+
+		self.setImage("bomb.png")
 
 	def fire(self, ship):
 		ship.game.objects.append(Objects.Bomb(ship.game, ship.owner, ship.x+ship.dx, ship.y+ship.dy+15, ship.dx, ship.dy+0.5))
@@ -182,6 +192,7 @@ class Backshot(Weapon):
 		self.loadSpeed = 0.5
 		self.recoil = -3
 		self.sound = 3
+		self.setImage("backshot_icon.png")
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Shard, -10, -3, 2, 0.2, 7)
@@ -193,6 +204,7 @@ class Reverse(Weapon):
 		self.activationCost = 0.75
 		self.continuousLoad = True
 		self.recoil = 0.04
+		self.setImage("reverse_icon.png")
 
 	def fire(self, ship):
 		if random.uniform(0,1) < 0.5:
@@ -230,6 +242,7 @@ class Halo(Weapon):
 		self.name = "Halo"
 		self.loadSpeed = 0.75
 		self.sound = 4
+		self.setImage("halo_icon.png")
 
 	def fire(self, ship):
 		self.shootObject(ship, Objects.Shard, 11, 6, 1, math.pi, 25)
@@ -250,6 +263,7 @@ class Eraser(Weapon):
 		self.name = "Eraser"
 		self.loadSpeed = 0.075
 		self.continuousLoad = False
+		self.setImage("eraser_icon.png")
 
 	def fire(self, ship):
 		object = Objects.Eraser(ship.game, ship.x, ship.y, ship.dx, ship.dy)
